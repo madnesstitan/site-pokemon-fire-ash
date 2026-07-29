@@ -1,0 +1,96 @@
+---
+title: "A Plain-English Glossary of Pokemon ROM Hack Terms"
+description: "Every term in Pokemon ROM hack release notes, defined without gatekeeping: patches, bases, Nuzlocke, EVs, megas, and the words that trip up newcomers."
+pubDate: 2026-07-25
+pageType: blog
+keywords: ["rom hack glossary", "nuzlocke meaning", "what is a rom base"]
+---
+
+import FeatureGrid from '../../components/FeatureGrid.astro'
+import Callout from '../../components/Callout.astro'
+import Quote from '../../components/Quote.astro'
+import FAQ from '../../components/FAQ.astro'
+
+ROM hack release notes assume a vocabulary most players never had to learn.
+Here is the whole set, in plain words, so a readme stops being a wall of
+jargon.
+
+## The files
+
+<FeatureGrid
+  columns={2}
+  items={[
+    {
+      title: "Patch",
+      text: "A small file of instructions that turns a clean ROM into the hacked game. Legal to share. If you only download one file, it is this.",
+    },
+    {
+      title: "Base ROM",
+      text: "The original game a hack is built on, most often FireRed for GBA hacks. You patch onto the base. A FireRed hack will not patch onto Emerald.",
+    },
+    {
+      title: "Patched ROM",
+      text: "The output you actually play. You make it once from the patch and the base, then keep it.",
+    },
+    {
+      title: "Emulator",
+      text: "The app that runs the patched ROM. mGBA for GBA, Mesen for SNES, and Delta for phones are the safe picks.",
+    },
+  ]}
+/>
+
+## The playstyle words
+
+<FeatureGrid
+  columns={2}
+  items={[
+    {
+      title: "Nuzlocke",
+      text: "A self-imposed ruleset: faint a Pokemon and release it, catch only the first encounter per route. A hack marked Nuzlocke-ready means it survives this.",
+    },
+    {
+      title: "Hard mode",
+      text: "Trainers have smarter AI, higher levels, and better moves. It does not change the story, only how much it punishes you.",
+    },
+    {
+      title: "EVs and IVs",
+      text: "Hidden stats. EVs you earn by battling, IVs are set per Pokemon. A hack with EV/IV display just lets you see them on the summary screen.",
+    },
+    {
+      title: "Mega evolution",
+      text: "A mid-battle one-form change from later generations, back-ported into GBA hacks. Temporary and powerful.",
+    },
+  ]}
+/>
+
+<Callout type="info" title="One word to ignore">
+  Anyone calling you a casual for not knowing a term is not worth reading. The
+  vocabulary is small and none of it is complicated once it is defined, which
+  is the point of this page.
+</Callout>
+
+<Quote author="A ROM hack release thread" source="top comment">
+  Half the replies asking for help were just people who did not know what a
+  base ROM was. Pinning a glossary would have saved us a week.
+</Quote>
+
+<FAQ
+  items={[
+    {
+      question: "What is the difference between a ROM and a patch",
+      answer: "The ROM is the whole game. The patch is only the changes. Sharing the patch is fine; sharing the ROM is not. You combine a patch with your own ROM to play.",
+    },
+    {
+      question: "Do I need to know these terms to play",
+      answer: "Only three: base ROM, patch, and emulator. The rest you learn if you pick up Nuzlocke or hard mode, which are optional.",
+    },
+    {
+      question: "What does difficulty meant for Nuzlocke mean",
+      answer: "The hack is balanced so that playing with Nuzlocke rules, where a fainted Pokemon is released, is survivable. A normal hack balanced for Nuzlocke would be too easy without those rules.",
+    },
+    {
+      question: "Is megas in this hack a good sign",
+      answer: "It means the hack pulled a feature from later generations into an older engine. It usually signals an ambitious, lovingly made hack, not a warning.",
+    },
+  ]}
+/>

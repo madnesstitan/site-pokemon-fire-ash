@@ -1,0 +1,151 @@
+---
+/**
+ * <StatBand> — a row of big numbers that count up on reveal.
+ *
+ *   <StatBand
+ *     items={[
+ *       { value: 382, suffix: '+', label: 'Catchable monsters' },
+ *       { value: 80, suffix: 'h', label: 'Main story' },
+ *       { value: 2023, label: 'Last updated' },
+ *     ]}
+ *   />
+ *
+ * The count-up is a vanilla IntersectionObserver — same philosophy as
+ * HomeLayout's reveal: zero deps, honors prefers-reduced-motion (jumps to
+ * final value immediately). The bespoke home_css layer targets `.stat-band`
+ * for per-niche scale/glow treatment.
+ */
+interface Item {
+  value: number;
+  suffix?: string;
+  prefix?: string;
+  label: string;
+}
+interface Props {
+  items: Item[];
+  eyebrow?: string;
+}
+const { items = [], eyebrow } = Astro.props;
+const safeItems = (items ?? []).filter((i) => i && typeof i.value === 'number');
+---
+
+<section class="stat-band" data-reveal>
+  {
+    eyebrow && (
+      <header class="band-intro">
+        <p class="eyebrow">{eyebrow}</p>
+      </header>
+    )
+  }
+  <dl class="stats">
+    {
+      safeItems.map((it) => (
+        <div class="stat" data-reveal>
+          <dd
+            class="value"
+            data-countup
+            data-value={it.value}
+            data-prefix={it.prefix ?? ''}
+            data-suffix={it.suffix ?? ''}
+          >
+            <span class="num">0</span>
+            <span class="affix">{it.prefix ?? ''}{it.suffix ?? ''}</span>
+          </dd>
+          <dt class="label">{it.label}</dt>
+        </div>
+      ))
+    }
+  </dl>
+</section>
+
+<script>
+  // Count-up reveal. Zero deps, honor prefers-reduced-motion by jumping.
+  // ponytail: staggered requestAnimationFrame, ~80ms budget per stat — bounded.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const els = document.querySelectorAll<HTMLElement>('.stat-band [data-countup]');
+  if (reduce || !('IntersectionObserver' in window)) {
+    els.forEach((el) => {
+      const num = el.querySelector('.num');
+      const v = Number(el.getAttribute('data-value') || '0');
+      if (num) num.textContent = v.toLocaleString();
+    });
+  } else {
+    const run = (el: HTMLElement) => {
+      const num = el.querySelector<HTMLElement>('.num');
+      const target = Number(el.getAttribute('data-value') || '0');
+      if (!num) return;
+      const dur = 1100;
+      const start = performance.now();
+      const step = (now: number) => {
+        const t = Math.min(1, (now - start) / dur);
+        const eased = 1 - Math.pow(1 - t, 3);
+        num.textContent = Math.round(target * eased).toLocaleString();
+        if (t < 1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            run(e.target as HTMLElement);
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { threshold: 0.4 },
+    );
+    els.forEach((el) => io.observe(el));
+  }
+</script>
+
+<style>
+  .stat-band {
+    width: 100%;
+  }
+  .band-intro {
+    margin-bottom: 1.4rem;
+  }
+  .stat-band .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin: 0;
+  }
+  .stat-band .stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(1.5rem, 5vw, 3.5rem);
+    margin: 0;
+    padding: 0;
+  }
+  .stat-band .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .stat-band .value {
+    display: flex;
+    align-items: baseline;
+    gap: 0.05em;
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    margin: 0;
+    color: var(--color-text);
+  }
+  .stat-band .value .affix {
+    font-size: 0.5em;
+    color: var(--color-accent);
+    font-weight: 700;
+  }
+  .stat-band .label {
+    font-size: 0.92rem;
+    color: var(--color-muted);
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+</style>

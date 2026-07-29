@@ -1,0 +1,25 @@
+/*
+ * Theme: paper — light, warm, editorial. Serif headings, generous measure,
+ * low contrast borders. Reads like a well-set magazine.
+ */
+[data-theme='paper'] {
+  --color-bg: #fafaf7;
+  --color-surface: #ffffff;
+  --color-surface-2: #f5f4ef;
+  --color-text: #1c1917;
+  --color-muted: #78716c;
+  --color-border: #e7e5e4;
+  --color-accent: #b45309;
+  --color-on-accent: #fffaf0;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-serif: Georgia, 'Iowan Old Style', 'Palatino Linotype', 'Book Antiqua',
+    Palatino, serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', Menlo, Consolas,
+    monospace;
+  --radius: 0.5rem;
+  --shadow-sm: 0 1px 2px rgba(28, 25, 23, 0.08);
+  --shadow-md: 0 6px 18px rgba(28, 25, 23, 0.1);
+  --measure: 68ch;
+  color-scheme: light;
+}

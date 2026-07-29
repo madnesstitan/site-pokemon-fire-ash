@@ -1,0 +1,201 @@
+---
+/**
+ * <HeroLanding> — the cinematic, full-bleed home hero. Distinct from <Hero>.
+ *
+ *   <HeroLanding
+ *     title="Pokemon Radical Red"
+ *     subtitle="Your complete field guide to the hardest ROM hack of Gen III."
+ *     eyebrow="Gen III ROM hack"
+ *     image="/images/hero.webp"
+ *     cta={{ href: "/start", label: "Start the guide" }}
+ *     secondary={{ href: "/faq", label: "Read the FAQ" }}
+ *   />
+ *
+ * Goes free-mode design: the layout/typography/motion are OWNED by this
+ * template, not the LLM. The LLM only writes copy + chooses whether to pass
+ * an image. The bespoke `home_css` layer (under [data-theme='niche']) targets
+ * `.hero-landing` for the per-niche cinematic treatment.
+ *
+ * Image fallback (#5 fix): when `image` is absent, a deterministic SVG
+ * accent-gradient + niche-initials placeholder renders behind the type — kills
+ * the denuded "bare title on plain bg" look without spending an API key or
+ * Pillow. Real Pexels images wire in later behind the same `image` prop.
+ */
+import { site } from '../../site.config';
+
+interface Cta {
+  href: string;
+  label: string;
+}
+interface Props {
+  title: string;
+  subtitle?: string;
+  eyebrow?: string;
+  image?: string;
+  imageAlt?: string;
+  cta?: Cta;
+  secondary?: Cta;
+  align?: 'center' | 'left';
+}
+const {
+  title,
+  subtitle,
+  eyebrow,
+  image,
+  imageAlt = '',
+  cta,
+  secondary,
+  align = 'left',
+} = Astro.props;
+const isCenter = align === 'center';
+
+// Deterministic placeholder initials from the site name — the hero needs
+// SOMETHING visual when no image is wired. SVG inline (no file), accent
+// gradient baked from site.accent. Encoded as a data URL so the same <img>
+// element handles both real and placeholder paths cleanly.
+const initials = (site.name || '?')
+  .split(/\s+/)
+  .filter(Boolean)
+  .slice(0, 3)
+  .map((w) => w[0]?.toUpperCase() ?? '')
+  .join('') || '?';
+const accent = site.accent || '#38bdf8';
+// A buxom radial wash in the accent on a near-black base — sets a mood even
+// before any bespoke home_css is layered on. The SVG uses %23 (#) for inks.
+const svg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 800'>
+  <defs>
+    <radialGradient id='g' cx='30%' cy='25%' r='85%'>
+      <stop offset='0%' stop-color='${accent}' stop-opacity='0.55' />
+      <stop offset='45%' stop-color='${accent}' stop-opacity='0.12' />
+      <stop offset='100%' stop-color='06070d' stop-opacity='1' />
+    </radialGradient>
+    <linearGradient id='g2' x1='0' y1='0' x2='0' y2='1'>
+      <stop offset='60%' stop-color='transparent' />
+      <stop offset='100%' stop-color='06070d' />
+    </linearGradient>
+  </defs>
+  <rect width='1200' height='800' fill='url(%23g)' />
+  <rect width='1200' height='800' fill='url(%23g2)' />
+  <text x='50%' y='54%' font-family='ui-sans-serif, system-ui, sans-serif'
+    font-size='440' font-weight='800' fill='rgba(255,255,255,0.07)'
+    text-anchor='middle' dominant-baseline='middle' letter-spacing='-20'>${initials}</text>
+</svg>`;
+const placeholder = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+const bg = image || placeholder;
+const bgIsImage = Boolean(image);
+---
+
+<section class:list={['hero-landing', isCenter && 'is-center']} data-reveal>
+  <img
+    src={bg}
+    alt={imageAlt}
+    loading="eager"
+    aria-hidden={bgIsImage ? undefined : 'true'}
+    class:list={['hero-landing__bg', !bgIsImage && 'is-placeholder']}
+  />
+  <div class:list={['hero-landing__inner', isCenter && 'is-center']}>
+    {eyebrow && <p class="hero-landing__eyebrow">{eyebrow}</p>}
+    <h1>{title}</h1>
+    {subtitle && <p class="hero-landing__subtitle">{subtitle}</p>}
+    {
+      (cta || secondary) && (
+        <div class="hero-landing__cta">
+          {cta && (
+            <a class="hero-landing__btn is-primary" href={cta.href}>
+              {cta.label}
+            </a>
+          )}
+          {secondary && (
+            <a class="hero-landing__btn is-secondary" href={secondary.href}>
+              {secondary.label}
+            </a>
+          )}
+        </div>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .hero-landing {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+  }
+  .hero-landing__bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Real images: subtle dim so type reads. Placeholder: attenuated by the
+       SVG itself (the initials sit at 8% alpha). The niche layer can override
+       either case via [data-theme='niche'] .hero-landing__bg.is-placeholder. */
+    filter: brightness(0.55) saturate(1.1);
+  }
+  .hero-landing__bg.is-placeholder {
+    filter: none;
+  }
+  .hero-landing__inner {
+    max-width: 64rem;
+  }
+  .hero-landing__inner.is-center {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .hero-landing__eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin: 0 0 1.1rem;
+  }
+  .hero-landing__subtitle {
+    margin-top: 1.4rem;
+    color: var(--color-muted);
+  }
+  .hero-landing__cta {
+    margin-top: 2.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    align-items: center;
+  }
+  .hero-landing__inner.is-center .hero-landing__cta {
+    justify-content: center;
+  }
+  .hero-landing__btn {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0.85rem 1.7rem;
+    border-radius: var(--radius);
+    font-weight: 600;
+    font-size: 1rem;
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-landing__btn:hover {
+      transform: translateY(-2px);
+    }
+  }
+  .hero-landing__btn.is-primary {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    box-shadow: var(--shadow-md);
+  }
+  .hero-landing__btn.is-primary:hover {
+    filter: brightness(1.08);
+  }
+  .hero-landing__btn.is-secondary {
+    background: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+  }
+  .hero-landing__btn.is-secondary:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+  }
+</style>

@@ -1,0 +1,146 @@
+---
+/**
+ * HomeLayout — the cinematic home shell. **Distinct** from ProseLayout.
+ *
+ * The home MDX leads with <HeroLanding>, then a stack of bespoke full-bleed
+ * sections (BentoGrid / Spotlight / StatBand / Marquee / FinalCTA + raw HTML
+ * with inline Tailwind). NO `max-w-5xl` shell, NO `<article class="prose">`
+ * — the home is a landing, not documentation. Inner pages (ProseLayout) are
+ * the calm "manual"; this contrast IS the premium feel.
+ *
+ * Reveal-on-scroll is provided by a vanilla `IntersectionObserver` — zero
+ * deps. Elements with `data-reveal` fade/slide in. `prefers-reduced-motion`
+ * is honored: the observer short-circuits and everything stays visible.
+ *
+ * The niche-specific `home_css` (authored by the design LLM, scoped under
+ * `[data-theme='niche']`) is loaded by global.css via niche.css — this layout
+ * only supplies the structural scaffolding and the reveal mechanism.
+ */
+import BaseLayout from './BaseLayout.astro';
+import type { PageFrontmatter, PageType } from '../content.config';
+
+interface Props {
+  frontmatter: PageFrontmatter;
+  pageType: PageType;
+  path: string;
+}
+
+const { frontmatter, pageType, path } = Astro.props;
+---
+
+<BaseLayout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  pageType={pageType}
+  path={path}
+  pubDate={frontmatter.pubDate}
+  updatedDate={frontmatter.updatedDate}
+  heroImage={frontmatter.heroImage}
+  keywords={frontmatter.keywords}
+>
+  <!-- The home is full-bleed; the MDX supplies every section. The .home scope
+       gives niche.css + the design LLM's home_css a clean hook to target. -->
+  <div class="home" data-home>
+    <slot />
+  </div>
+</BaseLayout>
+
+<style>
+  /* Global structural defaults for the home. The design LLM's home_css (under
+     [data-theme='niche']) layers ON TOP of these — it can override anything
+     per-niche for the cinematic 'landing-of-a-game' feel. Kept minimal so it
+     never fights the bespoke layer. */
+  .home :global(section) {
+    /* Each section owns its own padding/width via inline classes in the MDX;
+       this is just a sane default so a bare <section> doesn't hug the edges. */
+    width: 100%;
+  }
+
+  /* Reveal-on-scroll: elements tagged `data-reveal` start hidden, animate in.
+     Honor prefers-reduced-motion by leaving them visible (no transform, no
+     opacity change, no transition). The inline script toggles `.is-visible`. */
+  @media (prefers-reduced-motion: no-preference) {
+    .home :global([data-reveal]) {
+      opacity: 0;
+      transform: translateY(1.25rem);
+      transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+                  transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+      transition-delay: var(--reveal-delay, 0ms);
+      will-change: opacity, transform;
+    }
+    .home :global([data-reveal].is-visible) {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* Magazine-y display type for the hero — the niche layer can override these
+     tokens or replace the rule entirely via [data-theme='niche'] .home .hero-landing h1. */
+  .home :global(.hero-landing) {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: clamp(2rem, 6vw, 6rem) clamp(1rem, 4vw, 4rem);
+  }
+  .home :global(.hero-landing h1) {
+    font-size: clamp(2.5rem, 7vw, 5.5rem);
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+    font-weight: 800;
+    max-width: 18ch;
+  }
+  .home :global(.hero-landing p) {
+    font-size: clamp(1.05rem, 2.2vw, 1.4rem);
+    line-height: 1.45;
+    max-width: 60ch;
+  }
+
+  /* Sane defaults for the bespoke section classes the design LLM targets.
+     These are intentionally permissive — the bespoke CSS refines them. */
+  .home :global(.bento) {
+    display: grid;
+    gap: 1rem;
+    padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 4rem);
+  }
+  .home :global(.spotlight) {
+    padding-block: clamp(3rem, 8vw, 7rem);
+    padding-inline: clamp(1rem, 4vw, 4rem);
+  }
+  .home :global(.stat-band) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 4rem);
+  }
+  .home :global(.final-cta) {
+    padding: clamp(3rem, 8vw, 6rem) clamp(1rem, 4vw, 4rem);
+    text-align: center;
+  }
+</style>
+
+<script>
+  // Vanilla reveal — native platform feature before any dep. Honors
+  // prefers-reduced-motion (the CSS leaves the element visible under that
+  // media query; this observer is a no-op there because it still sets
+  // .is-visible harmlessly). ponytail: one IntersectionObserver instance,
+  // unobserves after first reveal — bounded work, no listener leak.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const els = document.querySelectorAll<HTMLElement>('.home [data-reveal]');
+  if (reduce || !('IntersectionObserver' in window)) {
+    els.forEach((el) => el.classList.add('is-visible'));
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            e.target.classList.add('is-visible');
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -8% 0px' },
+    );
+    els.forEach((el) => io.observe(el));
+  }
+</script>

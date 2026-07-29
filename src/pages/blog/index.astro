@@ -1,0 +1,44 @@
+---
+// Blog index at /blog — a simple, dated list. Uses BaseLayout directly (not a
+// prose page). BaseLayout emits a CollectionPage + BreadcrumbList schema for
+// this path. The nav "Blog" link must resolve here, so this page is required.
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { site } from '../../../site.config';
+
+const posts = (await getCollection('blog')).sort(
+  (a, b) => +new Date(b.data.pubDate) - +new Date(a.data.pubDate),
+);
+
+const fmt = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+<BaseLayout
+  title={`Blog — ${site.name}`}
+  description={`Articles from ${site.name}.`}
+  pageType="blog"
+  path="/blog"
+>
+  <section class="mx-auto max-w-3xl px-6 py-12">
+    <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Blog</h1>
+    <p class="mt-2 text-muted">{posts.length} article{posts.length === 1 ? '' : 's'}</p>
+    <ul class="mt-8 divide-y divide-border">
+      {
+        posts.map((p) => (
+          <li class="py-5">
+            <a href={`/blog/${p.id}`} class="block no-underline">
+              <h2 class="text-lg font-semibold text-text group-hover:text-accent">
+                {p.data.title}
+              </h2>
+              <p class="mt-1 text-sm text-muted">{p.data.description}</p>
+              <time class="mt-1 block text-xs text-muted/70" datetime={new Date(p.data.pubDate).toISOString()}>
+                {fmt(p.data.pubDate)}
+              </time>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>

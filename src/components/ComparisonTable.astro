@@ -1,0 +1,79 @@
+---
+/**
+ * <ComparisonTable> — side-by-side comparison. `rows` is an array of arrays
+ * where the FIRST row is the header. `highlight` is the index of the column
+ * to favour (tinted accent + a small "Best" pill in its header cell).
+ *
+ *   <ComparisonTable
+ *     highlight={1}
+ *     rows={[
+ *       ["", "Sita", "WordPress"],
+ *       ["Cost per site", "$1–3", "$20+/mo"],
+ *       ["Build time", "<30 min", "Days"],
+ *       ["Lock-in", "Git repo", "Database + plugins"]
+ *     ]}
+ *   />
+ *
+ * Cells are plain text/numbers; tables are scrollable on narrow viewports.
+ */
+type Cell = string | number;
+interface Props {
+  rows?: (string | number)[][];
+  highlight?: number;
+}
+// ponytail: ``?? []`` guard — see Steps.astro for rationale (wrong prop
+// name from the LLM → undefined ``rows`` → empty render, not a build crash).
+const { rows = [], highlight } = Astro.props;
+const header: Cell[] = rows[0] ?? [];
+const body: Cell[][] = rows.slice(1);
+const isHi = (c: number): boolean => highlight !== undefined && c === highlight;
+---
+
+<div class="my-8 overflow-x-auto rounded-md border border-border">
+  <table class="w-full border-collapse text-sm">
+    <thead>
+      <tr>
+        {
+          header.map((cell, c) => (
+            <th
+              class:list={[
+                'border-b border-border px-3 py-2.5 text-left font-semibold',
+                c === 0 ? 'text-muted' : 'text-text',
+                isHi(c) && 'bg-accent/10',
+              ]}
+              style={isHi(c) ? 'border-bottom-color: var(--color-accent);' : undefined}
+            >
+              <span class="inline-flex items-center gap-2">
+                {String(cell)}
+                {isHi(c) && (
+                  <em class="rounded-full border border-accent px-1.5 py-0.5 text-[0.65rem] font-bold not-italic text-accent">
+                    Best
+                  </em>
+                )}
+              </span>
+            </th>
+          ))
+        }
+      </tr>
+    </thead>
+    <tbody>
+      {
+        body.map((row) => (
+          <tr class:list={['group', isHi(0) ? undefined : 'even:bg-surface/60']}>
+            {row.map((cell, c) => (
+              <td
+                class:list={[
+                  'border-b border-border px-3 py-2.5 align-top',
+                  c === 0 ? 'font-medium text-muted' : 'text-text',
+                  isHi(c) && 'bg-accent/10 font-medium',
+                ]}
+              >
+                {String(cell)}
+              </td>
+            ))}
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

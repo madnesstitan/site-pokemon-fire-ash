@@ -1,0 +1,25 @@
+---
+// Blog posts at /blog/{id}. kind="article" → ProseLayout renders <h1> + byline +
+// hero banner, so the MDX must NOT open with <Hero> or its own <h1>.
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import ProseLayout from '../../layouts/ProseLayout.astro';
+
+export const getStaticPaths = (async () => {
+  const posts = await getCollection('blog');
+  return posts.map((p) => ({ params: { slug: p.id }, props: { entry: p } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const path = `/blog/${entry.id}`;
+---
+
+<ProseLayout
+  frontmatter={entry.data}
+  pageType={entry.data.pageType}
+  path={path}
+  kind="article"
+>
+  <Content />
+</ProseLayout>

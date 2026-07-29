@@ -1,0 +1,66 @@
+---
+/**
+ * <FAQ> — a FAQ accordion. Each item renders as a native <details>/<summary>
+ * (accessible + no JS) AND the component emits FAQPage JSON-LD automatically:
+ *
+ *   <FAQ items={[
+ *     { question: "Is this legal?", answer: "Patches are fine; ROMs aren't." },
+ *     { question: "What emulator?", answer: "mGBA for GBA, and Mesen for SNES." }
+ *   ]} />
+ *
+ * Per the plan: "No LLM ever writes schema markup." The component does it.
+ * Answer text is stripped to plain text for the JSON-LD `text` field so stray
+ * markup can never leak into structured data.
+ */
+interface Item {
+  question: string;
+  answer: string;
+}
+interface Props {
+  items?: Item[];
+}
+// ponytail: ``?? []`` guard — see Steps.astro for rationale (wrong prop
+// name from the LLM → undefined ``items`` → empty render, not a build crash).
+const { items = [] } = Astro.props;
+
+const stripText = (s: string): string =>
+  s
+    .replace(/<[^>]*>/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((it) => ({
+    '@type': 'Question',
+    name: it.question,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: stripText(it.answer),
+    },
+  })),
+};
+---
+
+<section class="my-8">
+  <details class="group mb-3 rounded-md border border-border bg-surface" id="faq">
+    <summary class="cursor-pointer list-none px-5 py-3 text-lg font-semibold marker:hidden">
+      Frequently asked questions
+    </summary>
+    <div class="divide-y divide-border px-5">
+      {
+        items.map((it) => (
+          <details class="group/py py-3">
+            <summary class="flex cursor-pointer items-center justify-between gap-3 font-medium marker:hidden">
+              <span>{it.question}</span>
+              <span class="text-accent transition group-open/py:rotate-45" aria-hidden="true">+</span>
+            </summary>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{it.answer}</p>
+          </details>
+        ))
+      }
+    </div>
+  </details>
+  <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+</section>

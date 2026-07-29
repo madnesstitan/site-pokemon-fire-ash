@@ -1,0 +1,55 @@
+---
+/**
+ * <FeatureGrid> — a responsive card grid. AI authors pass an `items` array;
+ * that's far more reliable than asking an LLM to nest JSX children.
+ *
+ *   <FeatureGrid items={[
+ *     { title: "Fast", text: "Builds in 60s." },
+ *     { title: "Cheap", text: "Under $3 a site." },
+ *     { title: "No lock-in", text: "Git is the content store." }
+ *   ]} />
+ *
+ * `columns` is optional; defaults to the item count capped at 4. Cards link
+ * out when `href` is present (common pattern: feature → pillar page).
+ */
+interface Item {
+  title: string;
+  text: string;
+  href?: string;
+}
+interface Props {
+  items?: Item[];
+  columns?: number;
+}
+// ponytail: ``?? []`` guard — see Steps.astro for rationale (wrong prop
+// name from the LLM → undefined ``items`` → empty render, not a build crash).
+const { items = [], columns } = Astro.props;
+const cols = Math.min(Math.max(columns ?? items.length, 1), 4);
+
+const spanClass: Record<number, string> = {
+  1: 'sm:grid-cols-1',
+  2: 'sm:grid-cols-2',
+  3: 'sm:grid-cols-3',
+  4: 'sm:grid-cols-4',
+};
+---
+
+<div class={`my-8 grid grid-cols-1 gap-4 ${spanClass[cols]}`}>
+  {
+    items.map((it) => {
+      const Card = (
+        <div class="flex h-full flex-col rounded-md border border-border bg-surface p-5 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+          <h3 class="text-lg font-semibold">{it.title}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-muted">{it.text}</p>
+        </div>
+      );
+      return it.href ? (
+        <a href={it.href} class="block h-full no-underline">
+          {Card}
+        </a>
+      ) : (
+        Card
+      );
+    })
+  }
+</div>

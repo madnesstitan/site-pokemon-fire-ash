@@ -1,0 +1,25 @@
+---
+// Homepage — renders the `pageType: "home"` entry from the `pages` collection.
+// Routes through HomeLayout (full-bleed, cinematic), NOT ProseLayout. The MDX
+// is free-mode: it leads with <HeroLanding>, then a stack of bespoke full-bleed
+// sections. The home is the "trailer"; inner pages are the calm "manual".
+import { getCollection, render } from 'astro:content';
+import HomeLayout from '../layouts/HomeLayout.astro';
+
+const pages = await getCollection('pages');
+const home = pages.find((p) => p.data.pageType === 'home');
+if (!home) {
+  throw new Error(
+    'No pageType:"home" entry found in src/content/pages/. Add exactly one home .mdx.',
+  );
+}
+const { Content } = await render(home);
+---
+
+<HomeLayout
+  frontmatter={home.data}
+  pageType={home.data.pageType}
+  path="/"
+>
+  <Content />
+</HomeLayout>

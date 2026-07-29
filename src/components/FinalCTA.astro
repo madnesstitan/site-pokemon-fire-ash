@@ -1,0 +1,97 @@
+---
+/**
+ * <FinalCTA> — the home's closing band. Bigger and more cinematic than <CTA>.
+ *
+ *   <FinalCTA
+ *     title="Ready to take on Radical Red?"
+ *     text="Our walkthrough takes you from starter selection to the Elite Four."
+ *     href="/walkthrough"
+ *     label="Open the walkthrough"
+ *   />
+ *
+ * Single-column, big display type, accent-tinted glow. The bespoke home_css
+ * layer targets `.final-cta` for the per-niche close (gradient wash, accent
+ * shine, etc.). Kept distinct from <CTA> so inner pages keep the calm boxed
+ * <CTA> — again, the contrast IS the premium feel.
+ */
+interface Props {
+  title: string;
+  text?: string;
+  href?: string;
+  label?: string;
+  eyebrow?: string;
+}
+const { title, text, href, label, eyebrow } = Astro.props;
+---
+
+<section class="final-cta" data-reveal>
+  <div class="inner">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h2>{title}</h2>
+    {text && <p>{text}</p>}
+    {
+      href && label && (
+        <a class="btn" href={href}>
+          {label}
+        </a>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .final-cta {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    /* Subtle radial tint via the theme accent — sits behind content. */
+    background:
+      radial-gradient(ellipse at 50% 120%,
+        color-mix(in oklab, var(--color-accent) 22%, transparent) 0%,
+        transparent 60%),
+      var(--color-bg);
+  }
+  .final-cta .inner {
+    max-width: 50rem;
+    margin-inline: auto;
+  }
+  .final-cta .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin: 0 0 0.9rem;
+  }
+  .final-cta h2 {
+    font-size: clamp(2rem, 5vw, 3.8rem);
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.05;
+    margin: 0;
+  }
+  .final-cta p {
+    margin-top: 1.1rem;
+    color: var(--color-muted);
+    font-size: 1.1rem;
+    line-height: 1.55;
+  }
+  .final-cta .btn {
+    display: inline-flex;
+    margin-top: 2rem;
+    padding: 0.95rem 2.1rem;
+    border-radius: var(--radius);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    font-weight: 700;
+    text-decoration: none;
+    box-shadow: var(--shadow-md);
+    transition: transform 0.2s ease, filter 0.2s ease;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .final-cta .btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.08);
+    }
+  }
+</style>

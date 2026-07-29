@@ -1,0 +1,149 @@
+---
+/**
+ * <Spotlight> — the alternating full-bleed feature band. Distinct from anything
+ * in the 8-component docs set.
+ *
+ *   <Spotlight
+ *     title="A regional dex that respects your time"
+ *     text="382 catchable monsters. No version exclusives, no trade evos..."
+ *     image="/images/dex.webp"
+ *     href="/pokedex"
+ *     label="Browse the dex"
+ *     flip={true}
+ *   />
+ *
+ * Stacks image one side, copy the other; `flip` swaps the side for visual
+ * rhythm down the page. The bespoke home_css layer targets `.spotlight` for
+ * the per-niche treatment (gridlines, halftone, duotone, etc.).
+ */
+interface Props {
+  title: string;
+  text?: string;
+  image?: string;
+  imageAlt?: string;
+  href?: string;
+  label?: string;
+  flip?: boolean;
+  eyebrow?: string;
+}
+const {
+  title,
+  text,
+  image,
+  imageAlt = '',
+  href,
+  label,
+  flip = false,
+  eyebrow,
+} = Astro.props;
+const initials = (title || '?')
+  .split(/\s+/)
+  .filter(Boolean)
+  .slice(0, 2)
+  .map((w) => w[0]?.toUpperCase() ?? '')
+  .join('') || '?';
+// Image fallback uses the BentoGrid-style accent wash — preserves the
+// alternating band rhythm even when no image is wired. Real images land in
+// behind the same `image` prop later.
+const placeholder =
+  `data:image/svg+xml;utf8,` +
+  encodeURIComponent(
+    `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 700'>
+      <rect width='600' height='700' fill='${'0d101b'}' />
+      <text x='50%' y='55%' font-family='ui-sans-serif, system-ui, sans-serif'
+        font-size='320' font-weight='800' fill='rgba(255,255,255,0.06)'
+        text-anchor='middle' dominant-baseline='middle'>${initials}</text>
+    </svg>`,
+  );
+const bg = image || placeholder;
+const bgIsImage = Boolean(image);
+---
+
+<section class:list={['spotlight', flip && 'is-flipped']} data-reveal>
+  <div class="media">
+    <img src={bg} alt={imageAlt} loading="lazy" aria-hidden={bgIsImage ? undefined : 'true'} />
+  </div>
+  <div class="copy">
+    {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+    <h2>{title}</h2>
+    {text && <p>{text}</p>}
+    {
+      href && label && (
+        <a class="link" href={href}>
+          {label}
+          <span class="arrow" aria-hidden="true">→</span>
+        </a>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .spotlight {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 4rem);
+  }
+  .spotlight.is-flipped .media {
+    order: 2;
+  }
+  .spotlight .media img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 5 / 6;
+    object-fit: cover;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+  }
+  .spotlight .copy {
+    padding-block: clamp(1rem, 3vw, 2rem);
+  }
+  .spotlight .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin: 0 0 0.8rem;
+  }
+  .spotlight h2 {
+    font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    margin: 0;
+  }
+  .spotlight p {
+    margin-top: 1rem;
+    color: var(--color-muted);
+    font-size: 1.05rem;
+    line-height: 1.6;
+  }
+  .spotlight .link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 1.6rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--color-accent);
+  }
+  .spotlight .arrow {
+    transition: transform 0.2s ease;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .spotlight .link:hover .arrow {
+      transform: translateX(4px);
+    }
+  }
+  @media (max-width: 720px) {
+    .spotlight,
+    .spotlight.is-flipped {
+      grid-template-columns: 1fr;
+    }
+    .spotlight.is-flipped .media {
+      order: 0;
+    }
+  }
+</style>

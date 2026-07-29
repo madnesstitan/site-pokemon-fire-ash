@@ -1,0 +1,22 @@
+/*
+ * Theme: bold — high contrast, neo-brutalist. Black borders, no radius,
+ * hard offset shadows, heavy type. Loud on purpose.
+ */
+[data-theme='bold'] {
+  --color-bg: #ffffff;
+  --color-surface: #f5f5f4;
+  --color-surface-2: #ededec;
+  --color-text: #0a0a0a;
+  --color-muted: #525252;
+  --color-border: #0a0a0a;
+  --color-accent: #ff4d00;
+  --color-on-accent: #0a0a0a;
+  --font-sans: ui-sans-serif, 'Helvetica Neue', system-ui, Arial, sans-serif;
+  --font-serif: ui-serif, Georgia, serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
+  --radius: 0rem;
+  --shadow-sm: 3px 3px 0 #0a0a0a;
+  --shadow-md: 5px 5px 0 #0a0a0a;
+  --measure: 72ch;
+  color-scheme: light;
+}

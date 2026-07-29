@@ -1,0 +1,45 @@
+/*
+ * Theme: niche — auto-generated for the 'pokemon fire ash' niche by sita.
+ * Layered on top of slate :root defaults via [data-theme='niche'].
+ * Re-run `sita build` (or `sita build --resume <id> --only design --force`)
+ * to regenerate; hand-edits will be overwritten.
+ */
+[data-theme='niche'] {
+  --color-bg: #0B0E14;
+  --color-surface: #1A1F2B;
+  --color-surface-2: #252B3A;
+  --color-text: #E8ECF1;
+  --color-muted: #8B92A0;
+  --color-border: #2D354A;
+  --color-accent: #F5A623;
+  --color-on-accent: #0B0E14;
+  --font-sans: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  --font-serif: 'Merriweather', 'Georgia', serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+  --radius: 0.75rem;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.4);
+  --measure: 70ch;
+  color-scheme: dark;
+}
+
+/* Bespoke home layer authored by the design LLM. */
+[data-theme='pokemon-fire-ash'] .hero-landing { background: linear-gradient(135deg, #0B0E14 0%, #1A1F2B 50%, #0B0E14 100%); position: relative; overflow: hidden; }
+[data-theme='pokemon-fire-ash'] .hero-landing::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(245, 166, 35, 0.03) 4px, rgba(245, 166, 35, 0.03) 8px); pointer-events: none; }
+[data-theme='pokemon-fire-ash'] .hero-landing::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; background: linear-gradient(0deg, rgba(245, 166, 35, 0.1) 0%, transparent 100%); }
+[data-theme='pokemon-fire-ash'] .hero-landing h1 { text-shadow: 0 0 40px rgba(245, 166, 35, 0.3); animation: flicker 3s ease-in-out infinite; }
+@keyframes flicker { 0%, 100% { opacity: 1; } 50% { opacity: 0.85; } }
+[data-theme='pokemon-fire-ash'] .spotlight { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center; }
+[data-theme='pokemon-fire-ash'] .spotlight .image-wrapper { border-radius: 0.75rem; overflow: hidden; box-shadow: 0 0 30px rgba(245, 166, 35, 0.15); transition: transform 0.4s ease, box-shadow 0.4s ease; }
+[data-theme='pokemon-fire-ash'] .spotlight .image-wrapper:hover { transform: scale(1.02); box-shadow: 0 0 50px rgba(245, 166, 35, 0.25); }
+[data-theme='pokemon-fire-ash'] .bento { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+[data-theme='pokemon-fire-ash'] .bento .card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 0.75rem; padding: 1.5rem; transition: border-color 0.3s, transform 0.3s; }
+[data-theme='pokemon-fire-ash'] .bento .card:hover { border-color: var(--color-accent); transform: translateY(-4px); }
+[data-theme='pokemon-fire-ash'] .stat-band { display: flex; justify-content: space-around; padding: 3rem 0; border-top: 1px solid var(--color-border); border-bottom: 1px solid var(--color-border); background: linear-gradient(90deg, transparent, rgba(245, 166, 35, 0.05), transparent); }
+[data-theme='pokemon-fire-ash'] .stat-band .stat-item { text-align: center; }
+[data-theme='pokemon-fire-ash'] .stat-band .stat-number { font-size: 2.5rem; font-weight: 700; color: var(--color-accent); }
+[data-theme='pokemon-fire-ash'] .stat-band .stat-label { color: var(--color-muted); font-size: 0.9rem; }
+[data-theme='pokemon-fire-ash'] .final-cta { text-align: center; padding: 4rem 2rem; background: radial-gradient(ellipse at center, rgba(245, 166, 35, 0.1) 0%, transparent 70%); }
+[data-theme='pokemon-fire-ash'] .final-cta .cta-button { background: var(--color-accent); color: var(--color-on-accent); border: none; padding: 1rem 2.5rem; font-size: 1.1rem; border-radius: 0.5rem; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 0 20px rgba(245, 166, 35, 0.3); animation: pulse-glow 2s ease-in-out infinite; }
+[data-theme='pokemon-fire-ash'] .final-cta .cta-button:hover { transform: scale(1.05); box-shadow: 0 0 40px rgba(245, 166, 35, 0.5); }
+@keyframes pulse-glow { 0%, 100% { box-shadow: 0 0 20px rgba(245, 166, 35, 0.3); } 50% { box-shadow: 0 0 40px rgba(245, 166, 35, 0.6); } }

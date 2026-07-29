@@ -1,0 +1,108 @@
+---
+title: "How to Patch a Pokemon ROM in Under Ten Minutes"
+description: "A safe, step-by-step guide to patching a Pokemon ROM hack from a clean ROM you dumped yourself. Covers xDelta and the browser patcher, with common errors solved."
+pubDate: 2026-07-25
+pageType: blog
+keywords: ["patch pokemon rom", "xdelta tutorial", "how to apply ips patch"]
+---
+
+import Steps from '../../components/Steps.astro'
+import Callout from '../../components/Callout.astro'
+import ComparisonTable from '../../components/ComparisonTable.astro'
+import Quote from '../../components/Quote.astro'
+import FAQ from '../../components/FAQ.astro'
+import CTA from '../../components/CTA.astro'
+
+Patching sounds scarier than it is. A patch file is a small set of
+instructions that turns a clean ROM into the hacked game. You bring the ROM,
+the patch brings the changes, the patcher glues them together. None of the
+steps need an account, and nothing here installs anything secretly.
+
+## The two patchers, side by side
+
+Pick one. The browser patcher is easiest; xDelta is the one that handles the
+biggest, newest hacks.
+
+<ComparisonTable
+  highlight={1}
+  rows={[
+    ["", "ROM Patcher JS", "xDelta cross"],
+    ["Installs anything", "No", "No"],
+    ["Runs in browser", "Yes", "No, an app"],
+    ["Handles xdelta patches", "Yes, small", "Yes, all sizes"],
+    ["Best for", "Most hacks", "Big recent hacks"],
+  ]}
+/>
+
+## Patching, step by step
+
+<Steps
+  items={[
+    {
+      title: "Get a clean ROM from a cartridge you own",
+      text: "Dump it with a cart reader or a homebrew console. A downloaded ROM is the part that is illegal, so do not start there.",
+    },
+    {
+      title: "Download the patch file",
+      text: "Grab the .xdelta or .ips file from the hack's release page. The patch is usually a few megabytes.",
+    },
+    {
+      title: "Open the patcher and drop both files in",
+      text: "The patcher asks for the patch and the clean ROM. Match the base the hack expects, almost always FireRed for GBA hacks.",
+    },
+    {
+      title: "Apply and save the patched ROM",
+      text: "Save it with a new name so you keep the clean ROM. The output is what your emulator opens.",
+    },
+    {
+      title: "Open it in your emulator and test the title screen",
+      text: "If the custom title screen shows, the patch applied. If the game is a black screen, the base ROM did not match, recheck step three.",
+    },
+  ]}
+/>
+
+<Callout type="warn" title="Match the base ROM">
+  A hack built on FireRed will not patch onto Emerald. The patcher will run and
+  produce a file that black-screens. Read which base the release page asks for
+  before you start.
+</Callout>
+
+<Callout type="tip" title="Keep the clean ROM">
+  Keep your clean ROM around. If a hack updates, you patch onto the clean copy
+  again. Patching onto an already-patched ROM corrupts it.
+</Callout>
+
+<Quote author="A longtime ROM hack maintainer" source="release notes">
+  Ninety percent of the bug reports I get are people who patched onto the
+  wrong base, or onto a ROM they already patched. Start clean, every time.
+</Quote>
+
+## When it goes wrong
+
+<FAQ
+  items={[
+    {
+      question: "The patched ROM is a black screen",
+      answer: "The base ROM did not match the patch. Recheck which base the hack expects, redump a clean copy, and patch onto that. Do not patch onto an already-patched ROM.",
+    },
+    {
+      question: "The patcher says the file is too big",
+      answer: "Use xDelta instead of the browser patcher. The browser tool struggles with the largest modern hacks; xDelta handles any size.",
+    },
+    {
+      question: "My emulator says unsupported file type",
+      answer: "Name the output file ending in .gba, .nds, or .gb matching the base. Some patchers let the extension default oddly; just rename it.",
+    },
+    {
+      question: "Do I need to do this every time I play",
+      answer: "No. You patch once and keep the output file forever. After that, just open it in your emulator.",
+    },
+  ]}
+/>
+
+<CTA
+  title="Patched and ready?"
+  text="Pick a hack that earned its slot and start playing."
+  href="/best-pokemon-rom-hacks"
+  label="See the top picks"
+/>

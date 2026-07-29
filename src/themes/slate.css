@@ -1,0 +1,26 @@
+/*
+ * Theme: slate — dark, professional, technical.
+ * Also the :root default (builds render correctly before <html data-theme>
+ * is set). Sibling themes override via [data-theme="paper"] / [data-theme="bold"].
+ */
+:root,
+[data-theme='slate'] {
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
+  --color-surface-2: #243047;
+  --color-text: #e2e8f0;
+  --color-muted: #94a3b8;
+  --color-border: #334155;
+  --color-accent: #38bdf8;
+  --color-on-accent: #0f172a;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  --font-serif: ui-serif, Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'JetBrains Mono',
+    Menlo, Consolas, monospace;
+  --radius: 0.75rem;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
+  --measure: 70ch;
+  color-scheme: dark;
+}

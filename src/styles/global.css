@@ -1,0 +1,174 @@
+/* Tailwind v4 entry. The Vite plugin scans this file; utilities are generated
+ * from class usage in .astro / .mdx. */
+@import 'tailwindcss';
+@import '../themes/niche.css';
+
+/* Theme palettes — :root default (slate) + the two overrides. Imported here so
+ * a single import of this file in BaseLayout bundles everything. */
+@import '../themes/slate.css';
+@import '../themes/paper.css';
+@import '../themes/bold.css';
+
+/* Expose the runtime CSS variables as Tailwind tokens. `inline` makes Tailwind
+ * emit `var(--color-*)` references (not resolved values), so swapping
+ * [data-theme] or overriding --color-accent via an inline style on <html>
+ * restyles the whole site at runtime / build time without regenerating CSS. */
+@theme inline {
+  --color-bg: var(--color-bg);
+  --color-surface: var(--color-surface);
+  --color-surface-2: var(--color-surface-2);
+  --color-text: var(--color-text);
+  --color-muted: var(--color-muted);
+  --color-border: var(--color-border);
+  --color-accent: var(--color-accent);
+  --color-on-accent: var(--color-on-accent);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+  --radius-sm: var(--radius);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-md: var(--shadow-md);
+  --measure: var(--measure);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-family: var(--font-sans);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    margin: 0;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--color-accent) 30%, transparent);
+  }
+
+  a {
+    color: var(--color-accent);
+    text-underline-offset: 2px;
+  }
+  a:hover {
+    text-decoration-thickness: 2px;
+  }
+
+  /* Prose: rendered .mdx bodies. Hand-rolled (no @tailwindcss/typography dep)
+   * to one measure; the template owns its own typography. */
+  .prose {
+    max-width: var(--measure);
+    margin-inline: auto;
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+  .prose > * + * {
+    margin-top: 1.25em;
+  }
+  .prose h2 {
+    font-size: 1.6rem;
+    margin-top: 2.2em;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+  }
+  .prose h3 {
+    font-size: 1.25rem;
+    margin-top: 1.8em;
+    line-height: 1.3;
+  }
+  .prose h2 + p,
+  .prose h3 + p {
+    margin-top: 0.6em;
+  }
+  .prose h1,
+  .prose h2,
+  .prose h3 {
+    font-weight: 700;
+    letter-spacing: -0.015em;
+  }
+  .prose p,
+  .prose li {
+    color: var(--color-text);
+  }
+  .prose ul,
+  .prose ol {
+    padding-left: 1.4em;
+  }
+  .prose li + li {
+    margin-top: 0.4em;
+  }
+  .prose blockquote {
+    border-left: 3px solid var(--color-accent);
+    padding-left: 1em;
+    color: var(--color-muted);
+    font-style: italic;
+    margin-inline: 0;
+  }
+  .prose code {
+    font-family: var(--font-mono);
+    font-size: 0.875em;
+    background: var(--color-surface-2, var(--color-surface));
+    padding: 0.12em 0.35em;
+    border-radius: 0.3em;
+  }
+  .prose pre {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    padding: 1rem 1.2rem;
+    overflow-x: auto;
+  }
+  .prose pre code {
+    background: none;
+    padding: 0;
+    font-size: 0.875rem;
+    border-radius: 0;
+  }
+  .prose img {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius);
+    border: 1px solid var(--color-border);
+  }
+  .prose hr {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin-block: 2.5em;
+  }
+  .prose table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95em;
+  }
+  .prose th,
+  .prose td {
+    border: 1px solid var(--color-border);
+    padding: 0.5em 0.75em;
+    text-align: left;
+  }
+  .prose th {
+    background: var(--color-surface);
+    font-weight: 600;
+  }
+
+  /* Reduce motion: respect user preference everywhere. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}

@@ -1,0 +1,2 @@
+# Public images — populated by the pipeline (`images` stage) as optimized .webp.
+# Kept in git so a generated site repo ships every image it references.

@@ -1,0 +1,138 @@
+---
+/**
+ * <BentoGrid> — the home's modular card grid. Distinct from <FeatureGrid>.
+ *
+ *   <BentoGrid
+ *     items={[
+ *       { title: 'Tuning Guide', text: 'IVs, EVs, natures.', href: '/tuning', size: 'lg' },
+ *       { title: 'Trainer AI', text: 'How opponents pick moves.', size: 'sm' },
+ *       { title: 'TM Locations', text: 'Every TM with maps.', href: '/tms' },
+ *     ]}
+ *     columns={3}
+ *   />
+ *
+ * The cards use CSS grid auto-flow with `--col-span` / `--row-span` per item,
+ * so a `size: 'lg'` item can break out of the regular rhythm — the magazine/
+ * bento look. The bespoke home_css layer (under [data-theme='niche']) targets
+ * `.bento` to refine per-niche. Always `data-reveal` for scroll-fade.
+ */
+interface Item {
+  title?: string;
+  text?: string;
+  href?: string;
+  size?: 'sm' | 'md' | 'lg';
+}
+interface Props {
+  items: Item[];
+  columns?: number;
+  eyebrow?: string;
+  heading?: string;
+}
+const { items = [], columns = 3, eyebrow, heading } = Astro.props;
+const safeItems = (items ?? []).filter(Boolean);
+const colSpan = (s?: string) =>
+  s === 'lg' ? 'span 2' : s === 'sm' ? 'span 1' : 'span 1';
+const rowSpan = (s?: string) => (s === 'lg' ? 'span 2' : 'span 1');
+---
+
+<section class="bento" data-reveal style={`--cols: ${columns};`}>
+  {
+    (eyebrow || heading) && (
+      <header class="intro">
+        {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+        {heading && <h2>{heading}</h2>}
+      </header>
+    )
+  }
+  <div class="grid">
+    {
+      safeItems.map((it) => {
+        const Card = it.href ? 'a' : 'div';
+        return (
+          <Card
+            class="card"
+            style={`--col-span: ${colSpan(it.size)}; --row-span: ${rowSpan(it.size)};`}
+            href={it.href}
+            data-reveal
+          >
+            {it.title && <h3>{it.title}</h3>}
+            {it.text && <p>{it.text}</p>}
+          </Card>
+        );
+      })
+    }
+  </div>
+</section>
+
+<style>
+  .bento {
+    width: 100%;
+  }
+  .bento .intro {
+    margin-bottom: 1.5rem;
+  }
+  .bento .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    margin: 0 0 0.6rem;
+  }
+  .bento .intro h2 {
+    font-size: clamp(1.8rem, 3.6vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    margin: 0;
+  }
+  .bento .grid {
+    display: grid;
+    grid-template-columns: repeat(var(--cols, 3), minmax(0, 1fr));
+    grid-auto-flow: dense;
+    gap: 1rem;
+  }
+  .bento .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    grid-column: var(--col-span, span 1);
+    grid-row: var(--row-span, span 1);
+    padding: 1.5rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.25s ease, box-shadow 0.25s ease,
+      border-color 0.25s ease;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .bento a.card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--color-accent);
+    }
+  }
+  .bento .card h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .bento .card p {
+    color: var(--color-muted);
+    margin: 0;
+    font-size: 0.96rem;
+    line-height: 1.5;
+  }
+  @media (max-width: 720px) {
+    .bento .grid {
+      grid-template-columns: 1fr;
+    }
+    .bento .card {
+      grid-column: span 1 !important;
+      grid-row: span 1 !important;
+    }
+  }
+</style>

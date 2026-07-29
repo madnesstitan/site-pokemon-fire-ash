@@ -1,0 +1,27 @@
+---
+// Top-level pages — every `pages` collection entry that is not the home page
+// renders at /{id}. The MDX leads with <Hero> or an <h1> (kind="landing").
+import { getCollection, render } from 'astro:content';
+import type { GetStaticPaths } from 'astro';
+import ProseLayout from '../layouts/ProseLayout.astro';
+
+export const getStaticPaths = (async () => {
+  const pages = await getCollection('pages');
+  return pages
+    .filter((p) => p.data.pageType !== 'home')
+    .map((p) => ({ params: { slug: p.id }, props: { entry: p } }));
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const path = `/${entry.id}`;
+---
+
+<ProseLayout
+  frontmatter={entry.data}
+  pageType={entry.data.pageType}
+  path={path}
+  kind="landing"
+>
+  <Content />
+</ProseLayout>

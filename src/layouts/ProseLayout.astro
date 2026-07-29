@@ -1,0 +1,74 @@
+---
+/**
+ * ProseLayout — wraps BaseLayout with the content scaffold.
+ *
+ * Two modes:
+ *   - kind="article" (blog posts): renders an <h1> + byline + hero image
+ *     banner, then the MDX body in <article class="prose">. The writer must
+ *     NOT also write an <h1> or a <Hero> at the top.
+ *   - kind="landing" (home/pillar/comparison/how_to): renders the MDX body
+ *     only, in <article class="prose">. The page leads with its own <Hero>
+ *     or an <h1> (exactly one — enforced by the writing skill, not here).
+ *
+ * This single rule (the writer controls the lead, the layout controls the
+ * shell) avoids duplicate <h1>s without a fragile "detect Hero in the body".
+ */
+import BaseLayout from './BaseLayout.astro';
+import type { PageFrontmatter, PageType } from '../content.config';
+
+interface Props {
+  frontmatter: PageFrontmatter;
+  pageType: PageType;
+  path: string;
+  kind: 'article' | 'landing';
+}
+
+const { frontmatter, pageType, path, kind } = Astro.props;
+const isArticle = kind === 'article';
+const fmtDate = (d: Date) =>
+  d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+---
+
+<BaseLayout
+  title={frontmatter.title}
+  description={frontmatter.description}
+  pageType={pageType}
+  path={path}
+  pubDate={frontmatter.pubDate}
+  updatedDate={frontmatter.updatedDate}
+  heroImage={frontmatter.heroImage}
+  keywords={frontmatter.keywords}
+>
+  <article class="mx-auto px-6 py-10 sm:py-14">
+    {
+      isArticle && (
+        <header class="mx-auto mb-8 max-w-3xl">
+          <p class="text-sm text-muted">
+            <time datetime={new Date(frontmatter.pubDate).toISOString()}>
+              {fmtDate(frontmatter.pubDate)}
+            </time>
+            {frontmatter.updatedDate && (
+              <span class="ml-2 italic text-muted/70">
+                · updated {fmtDate(frontmatter.updatedDate)}
+              </span>
+            )}
+          </p>
+          <h1 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+            {frontmatter.title}
+          </h1>
+          {frontmatter.heroImage && (
+            <img
+              src={frontmatter.heroImage}
+              alt=""
+              class="mt-6 w-full rounded-md border border-border object-cover"
+              loading="eager"
+            />
+          )}
+        </header>
+      )
+    }
+    <div class="prose">
+      <slot />
+    </div>
+  </article>
+</BaseLayout>

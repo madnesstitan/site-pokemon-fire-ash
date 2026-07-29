@@ -1,0 +1,51 @@
+---
+/**
+ * <Steps> — a numbered how-to sequence. Renders an accessible ordered list
+ * with large numerals; the visual order comes from `items` order.
+ *
+ *   <Steps items={[
+ *     "Download the patch.",
+ *     "Apply it to a clean ROM.",
+ *     "Open in your emulator."
+ *   ]} />
+ *
+ * Items may be strings or { title, text } objects. No JS.
+ */
+interface Step {
+  title: string;
+  text?: string;
+}
+interface Props {
+  items?: (string | Step)[];
+}
+// ponytail: ``?? []`` — an LLM that passes the wrong prop name (e.g.
+// ``steps`` instead of ``items``) gets ``undefined`` here. Without this guard
+// ``items.map`` throws and the whole site build dies on Cloudflare. With it,
+// the section renders empty (visible to the operator, fixable) and the rest
+// of the page ships. The source-of-truth fix is the organize prompt's prop
+// contract; this is the defense-in-depth so one wrong prop is not a deploy
+// killer. Same pattern across Steps/FAQ/FeatureGrid/ComparisonTable.
+const { items = [] } = Astro.props;
+const steps: Step[] = items.map((s) =>
+  typeof s === 'string' ? { title: s } : s,
+);
+---
+
+<ol class="my-8 list-none space-y-6 pl-0">
+  {
+    steps.map((s, i) => (
+      <li class="relative grid grid-cols-[auto_1fr] gap-4">
+        <span
+          class="flex h-10 w-10 flex-none items-center justify-center rounded-full border-2 border-accent font-bold text-accent"
+          aria-hidden="true"
+        >
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <div class="pt-1.5">
+          <p class="font-semibold leading-snug">{s.title}</p>
+          {s.text && <p class="mt-1 text-sm leading-relaxed text-muted">{s.text}</p>}
+        </div>
+      </li>
+    ))
+  }
+</ol>

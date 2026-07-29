@@ -1,0 +1,87 @@
+---
+/**
+ * <Hero> — top-of-page headline band. Usually the first thing on a homepage
+ * or pillar page. Title + optional subtitle + optional CTA + optional image.
+ *
+ *   <Hero title="..." subtitle="..." image="/images/x.webp" imageAlt="...">
+ *     <CTA href="/start" label="Begin" />
+ *   </Hero>
+ *
+ * The slot (children) is rendered below the heading and centered — drop a
+ * <CTA> or any markup there.
+ */
+interface Cta {
+  href: string;
+  label: string;
+}
+interface Props {
+  title: string;
+  subtitle?: string;
+  image?: string;
+  imageAlt?: string;
+  cta?: Cta;
+  align?: 'center' | 'left';
+}
+const {
+  title,
+  subtitle,
+  image,
+  imageAlt = '',
+  cta,
+  align = 'center',
+} = Astro.props;
+const isCenter = align === 'center';
+---
+
+<section
+  class:list={[
+    'relative overflow-hidden border-b border-border px-6 py-16 sm:py-20 md:py-24',
+    isCenter ? 'text-center' : 'text-left',
+  ]}
+>
+  {
+    image && (
+      <img
+        src={image}
+        alt={imageAlt}
+        loading="eager"
+        class="absolute inset-0 -z-10 h-full w-full object-cover opacity-25"
+      />
+    )
+  }
+  <div
+    class:list={['mx-auto max-w-3xl', isCenter && 'flex flex-col items-center']}
+  >
+    <h1
+      class:list={[
+        'text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl',
+        isCenter ? 'mx-auto' : '',
+      ]}
+      style="max-width: 18ch;"
+    >
+      {title}
+    </h1>
+    {
+      subtitle && (
+        <p class:list={['mt-5 text-lg text-muted', isCenter && 'mx-auto']} style="max-width: 52ch;">
+          {subtitle}
+        </p>
+      )
+    }
+    {
+      (cta || Astro.slots.has('default')) && (
+        <div class:list={['mt-8 flex flex-wrap gap-3', isCenter && 'justify-center']}>
+          {cta && (
+            <a
+              href={cta.href}
+              class="inline-flex items-center rounded-sm bg-accent px-6 py-3 font-semibold text-on-accent shadow-md transition hover:brightness-110"
+            >
+              {cta.label}
+            </a>
+          )}
+          <slot />
+        </div>
+      )
+    }
+  </div>
+</section>

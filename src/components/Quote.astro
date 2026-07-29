@@ -1,0 +1,37 @@
+---
+/**
+ * <Quote> — a pull quote with attribution.
+ *
+ *   <Quote author="Junichi Masuda" role="Game Freak" source="interview">
+ *     Pokemon was born from my childhood love of catching insects.
+ *   </Quote>
+ *
+ * `source` may be a URL (becomes <cite>) or a label (plain text).
+ */
+interface Props {
+  author: string;
+  role?: string;
+  source?: string;
+}
+const { author, role, source } = Astro.props;
+const isUrl = source && /^https?:\/\//.test(source);
+---
+
+<figure class="my-8 border-l-4 border-l-accent pl-5">
+  <blockquote class="text-lg italic leading-relaxed text-text">
+    <slot />
+  </blockquote>
+  <figcaption class="mt-3 text-sm text-muted not-italic">
+    — <span class="font-semibold text-text">{author}</span>
+    {role && <span>, {role}</span>}
+    {
+      source && isUrl ? (
+        <a href={source} class="ml-1" rel="noopener">
+          (source)
+        </a>
+      ) : source ? (
+        <span>, {source}</span>
+      ) : null
+    }
+  </figcaption>
+</figure>

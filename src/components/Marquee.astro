@@ -1,0 +1,101 @@
+---
+/**
+ * <Marquee> — a horizontally scrolling row of badges / labels / chips. Not a
+ * testimonial wall (those need avatars the LLM can't source yet). It's the
+ * ambient-branded strip between heavier sections, breaking up rhythm.
+ *
+ *   <Marquee
+ *     items={['Gen III', '382 monsters', 'No trade evos', 'RTC enabled', ...]}
+ *     direction="left"
+ *   />
+ *
+ * Pure CSS animation. Honors prefers-reduced-motion: under that media query
+ * the marquee is static (no animation, items just visible) — the keyframes
+ * still exist but the animation property is unset on the element. Duplicate
+ * the list once for an infinite loop.
+ */
+interface Props {
+  items: string[];
+  direction?: 'left' | 'right';
+  variant?: 'text' | 'badge';
+}
+const { items = [], direction = 'left', variant = 'badge' } = Astro.props;
+const safeItems = (items ?? []).filter((s) => typeof s === 'string' && s);
+const loop = [...safeItems, ...safeItems];
+---
+
+<section class:list={['marquee', `is-${variant}`]} data-reveal aria-label="Highlights">
+  <div class:list={['track', `go-${direction}`]}>
+    {
+      loop.map((it) => (
+        <span class="chip">{it}</span>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .marquee {
+    width: 100%;
+    overflow: hidden;
+    padding-block: 1.4rem;
+    border-block: 1px solid var(--color-border);
+  }
+  .marquee .track {
+    display: flex;
+    gap: 1.4rem;
+    width: max-content;
+  }
+  .marquee.go-left {
+    animation: marquee-left 32s linear infinite;
+  }
+  .marquee.go-right {
+    animation: marquee-right 32s linear infinite;
+  }
+  @keyframes marquee-left {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @keyframes marquee-right {
+    from {
+      transform: translateX(-50%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  .marquee .chip {
+    white-space: nowrap;
+    font-weight: 600;
+    padding: 0.4rem 0.95rem;
+    border-radius: var(--radius);
+  }
+  .marquee.is-badge .chip {
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    color: var(--color-text);
+    font-size: 0.85rem;
+  }
+  .marquee.is-text .chip {
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--color-muted);
+    font-size: 1.6rem;
+    letter-spacing: -0.01em;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee .track {
+      animation: none;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .marquee:hover .track {
+      animation-play-state: paused;
+    }
+  }
+</style>

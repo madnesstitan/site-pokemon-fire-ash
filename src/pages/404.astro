@@ -1,0 +1,29 @@
+---
+// 404 — Astro serves this at any unmatched path. Keep the theme + SEO shell
+// consistent; no JSON-LD, noindex so it never competes with real pages.
+import { site } from '../../site.config';
+import '../styles/global.css';
+const titles: string[] = ['Not found', 'Page missing', 'Lost in the tall grass'];
+const msg = titles[Math.floor(Math.random() * titles.length)];
+---
+
+<!doctype html>
+<html lang="en" data-theme={site.theme} style={`--color-accent: ${site.accent};`}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>404 — {site.name}</title>
+    <meta name="robots" content="noindex" />
+  </head>
+  <body class="flex min-h-screen flex-col items-center justify-center bg-bg px-6 text-center text-text">
+    <p class="text-6xl font-bold text-accent">404</p>
+    <h1 class="mt-4 text-2xl font-semibold">{msg}</h1>
+    <p class="mt-2 text-muted">This page wandered off.</p>
+    <a
+      href="/"
+      class="mt-6 inline-flex items-center rounded-sm bg-accent px-5 py-2.5 font-semibold text-on-accent shadow-md transition hover:brightness-110"
+    >
+      Back home
+    </a>
+  </body>
+</html>
