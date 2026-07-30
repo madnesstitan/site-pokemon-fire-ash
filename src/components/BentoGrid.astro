@@ -97,31 +97,39 @@ const rowSpan = (s?: string) => (s === 'lg' ? 'span 2' : 'span 1');
     gap: 0.6rem;
     grid-column: var(--col-span, span 1);
     grid-row: var(--row-span, span 1);
-    padding: 1.5rem;
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius);
+    padding: 1.75rem;
+    border: var(--card-border-width) solid var(--card-border-color);
+    border-radius: var(--card-radius);
     background: var(--color-surface);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--card-shadow);
     text-decoration: none;
     color: inherit;
-    transition: transform 0.25s ease, box-shadow 0.25s ease,
-      border-color 0.25s ease;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+      box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   }
+  /* Cycle the 6-color palette down the grid — the mockup's colored bento. */
+  .bento .card:nth-child(6n+1) { background: var(--card-1); color: var(--card-1-text); }
+  .bento .card:nth-child(6n+2) { background: var(--card-2); color: var(--card-2-text); }
+  .bento .card:nth-child(6n+3) { background: var(--card-3); color: var(--card-3-text); }
+  .bento .card:nth-child(6n+4) { background: var(--card-4); color: var(--card-4-text); }
+  .bento .card:nth-child(6n+5) { background: var(--card-5); color: var(--card-5-text); }
+  .bento .card:nth-child(6n+6) { background: var(--card-6); color: var(--card-6-text); }
   @media (prefers-reduced-motion: no-preference) {
     .bento a.card:hover {
-      transform: translateY(-3px);
-      box-shadow: var(--shadow-md);
-      border-color: var(--color-accent);
+      transform: translateY(-6px);
+      box-shadow: var(--card-shadow-hover);
     }
   }
   .bento .card h3 {
     font-size: 1.2rem;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: -0.01em;
     margin: 0;
+    color: inherit;
   }
   .bento .card p {
-    color: var(--color-muted);
+    color: inherit;
+    opacity: 0.93;
     margin: 0;
     font-size: 0.96rem;
     line-height: 1.5;

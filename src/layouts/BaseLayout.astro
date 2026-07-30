@@ -207,36 +207,37 @@ const articleMode = !isHome && !isBlogIndex;
       >Skip to content</a
     >
 
-    <header class="border-b border-border">
-      <nav
-        class="mx-auto flex max-w-5xl items-center justify-between gap-4 px-6 py-4"
-        aria-label="Primary"
-      >
-        <a href="/" class="text-lg font-bold no-underline text-text">{site.name}</a>
-        <ul class="flex flex-wrap items-center gap-x-5 gap-y-1 text-sm">
-          <li><a href="/" class="text-muted hover:text-text no-underline">Home</a></li>
-          <li><a href="/blog" class="text-muted hover:text-text no-underline">Blog</a></li>
+    <header class="site-header">
+      <div class="nav-container">
+        <a href="/" class="brand-logo">{site.name}</a>
+        <nav class="nav-links" aria-label="Primary">
+          <a href="/" class="nav-link" aria-current={isHome ? 'page' : undefined}>Home</a>
+          <a href="/blog" class="nav-link" aria-current={isBlogIndex ? 'page' : undefined}>Blog</a>
           {
-            navPages.map((p) => (
-              <li>
-                <a href={`/${p.id}`} class="text-muted hover:text-text no-underline">
+            navPages.map((p) => {
+              const href = `/${p.id}`;
+              return (
+                <a
+                  href={href}
+                  class="nav-link"
+                  aria-current={path === href ? 'page' : undefined}
+                >
                   {p.data.title.length > 24 ? p.data.title.slice(0, 23) + '…' : p.data.title}
                 </a>
-              </li>
-            ))
+              );
+            })
           }
-        </ul>
-      </nav>
+        </nav>
+      </div>
     </header>
 
     <main id="main" class="flex-1">
       <slot />
     </main>
 
-    <footer class="mt-16 border-t border-border">
-      <div
-        class="mx-auto flex max-w-5xl flex-col items-center justify-between gap-2 px-6 py-8 text-sm text-muted sm:flex-row"
-      >
+    <footer class="site-footer">
+      <div class="footer-content">
+        <p><strong>{site.name}</strong></p>
         <p>&copy; {new Date().getFullYear()} {site.name}.</p>
       </div>
     </footer>

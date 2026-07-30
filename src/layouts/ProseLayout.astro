@@ -14,6 +14,7 @@
  * shell) avoids duplicate <h1>s without a fragile "detect Hero in the body".
  */
 import BaseLayout from './BaseLayout.astro';
+import { site } from '../../site.config';
 import type { PageFrontmatter, PageType } from '../content.config';
 
 interface Props {
@@ -25,6 +26,7 @@ interface Props {
 
 const { frontmatter, pageType, path, kind } = Astro.props;
 const isArticle = kind === 'article';
+const isLegal = pageType === 'legal';
 const fmtDate = (d: Date) =>
   d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 ---
@@ -39,36 +41,68 @@ const fmtDate = (d: Date) =>
   heroImage={frontmatter.heroImage}
   keywords={frontmatter.keywords}
 >
-  <article class="mx-auto px-6 py-10 sm:py-14">
-    {
-      isArticle && (
-        <header class="mx-auto mb-8 max-w-3xl">
-          <p class="text-sm text-muted">
-            <time datetime={new Date(frontmatter.pubDate).toISOString()}>
-              {fmtDate(frontmatter.pubDate)}
-            </time>
-            {frontmatter.updatedDate && (
-              <span class="ml-2 italic text-muted/70">
-                · updated {fmtDate(frontmatter.updatedDate)}
-              </span>
-            )}
-          </p>
-          <h1 class="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-            {frontmatter.title}
-          </h1>
-          {frontmatter.heroImage && (
-            <img
-              src={frontmatter.heroImage}
-              alt=""
-              class="mt-6 w-full rounded-md border border-border object-cover"
-              loading="eager"
-            />
+  {isArticle ? (
+    <article class="mx-auto max-w-3xl px-6 py-12 sm:py-16">
+      <header class="mb-8 flex flex-col gap-4">
+        <a href="/blog" class="text-sm font-bold text-accent no-underline">
+          ← Back to Blog
+        </a>
+        <h1 class="text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">
+          {frontmatter.title}
+        </h1>
+        <div class="flex flex-wrap items-center gap-3 border-b border-border pb-6 text-sm font-semibold text-muted">
+          <span class="flex items-center gap-2 text-text">
+            <span>Written by {site.name}</span>
+          </span>
+          <span aria-hidden="true">•</span>
+          <time datetime={new Date(frontmatter.pubDate).toISOString()}>
+            {fmtDate(frontmatter.pubDate)}
+          </time>
+          {frontmatter.updatedDate && (
+            <>
+              <span aria-hidden="true">•</span>
+              <span>updated {fmtDate(frontmatter.updatedDate)}</span>
+            </>
           )}
+        </div>
+      </header>
+
+      {frontmatter.heroImage && (
+        <div class="article-hero-card mb-8">
+          <img src={frontmatter.heroImage} alt="" loading="eager" />
+        </div>
+      )}
+
+      <div class="prose">
+        <slot />
+      </div>
+
+      <div class="author-box">
+        <div>
+          <div class="author-name">{site.name}</div>
+          <div class="author-bio">{site.tagline}</div>
+        </div>
+      </div>
+    </article>
+  ) : isLegal ? (
+    <div class="mx-auto max-w-3xl px-6 py-14 sm:py-20">
+      <main class="policy-card">
+        <header class="flex flex-col gap-2 border-b border-border pb-6">
+          <h1 class="text-4xl font-extrabold tracking-tight">{frontmatter.title}</h1>
+          <div class="text-sm font-semibold text-muted">
+            Last Updated: {fmtDate(frontmatter.updatedDate ?? frontmatter.pubDate)}
+          </div>
         </header>
-      )
-    }
-    <div class="prose">
-      <slot />
+        <div class="prose">
+          <slot />
+        </div>
+      </main>
     </div>
-  </article>
+  ) : (
+    <article class="mx-auto max-w-3xl px-6 py-12 sm:py-16">
+      <div class="prose">
+        <slot />
+      </div>
+    </article>
+  )}
 </BaseLayout>

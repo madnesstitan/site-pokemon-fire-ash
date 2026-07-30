@@ -20,34 +20,19 @@ const label: Record<Props['type'] & string, string> = {
   danger: 'Warning',
 };
 
-// Border tint per type, using the accent for `info` so the callout still
-// reads on-brand when the accent is overridden.
-const borderClass: Record<Props['type'] & string, string> = {
-  info: 'border-l-accent',
-  tip: 'border-l-[color-mix(in_oklab,oklch(0.72_0.15_200deg),transparent_20%)]',
-  warn: 'border-l-[color-mix(in_oklab,oklch(0.72_0.17_65deg),transparent_20%)]',
-  success: 'border-l-[color-mix(in_oklab,oklch(0.72_0.16_150deg),transparent_20%)]',
-  danger: 'border-l-[color-mix(in_oklab,oklch(0.66_0.22_27deg),transparent_20%)]',
-};
-const bgClass: Record<Props['type'] & string, string> = {
-  info: 'bg-surface',
-  tip: 'bg-surface',
-  warn: 'bg-surface',
-  success: 'bg-surface',
-  danger: 'bg-surface',
+// Vanguard callout colors — map the semantic type to a palette fill. The
+// .callout-box.<color> classes live in global.css and use the card tokens.
+const colorClass: Record<Props['type'] & string, string> = {
+  info: 'teal',
+  tip: 'green',
+  warn: 'yellow',
+  success: 'green',
+  danger: 'burgundy',
 };
 ---
 
-<aside
-  class:list={[
-    'my-6 rounded-md border border-border border-l-4 p-4 sm:p-5',
-    borderClass[type],
-    bgClass[type],
-  ]}
->
-  <p class="mb-1 text-sm font-semibold uppercase tracking-wide text-muted">
-    {title ?? label[type]}
-  </p>
+<aside class:list={['callout-box my-6', colorClass[type]]}>
+  <div class="dashed-badge">{title ?? label[type]}</div>
   <div class="text-[0.95rem] leading-relaxed">
     <slot />
   </div>

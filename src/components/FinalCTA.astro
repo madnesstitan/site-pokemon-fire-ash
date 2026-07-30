@@ -79,19 +79,22 @@ const { title, text, href, label, eyebrow } = Astro.props;
   .final-cta .btn {
     display: inline-flex;
     margin-top: 2rem;
-    padding: 0.95rem 2.1rem;
+    padding: 0.95rem 2.2rem;
+    border: var(--card-border-width) solid var(--card-border-color);
     border-radius: var(--radius);
-    background: var(--color-accent);
+    background: var(--grad-1);
     color: var(--color-on-accent);
     font-weight: 700;
+    font-size: 1.05rem;
     text-decoration: none;
-    box-shadow: var(--shadow-md);
-    transition: transform 0.2s ease, filter 0.2s ease;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
   }
   @media (prefers-reduced-motion: no-preference) {
     .final-cta .btn:hover {
-      transform: translateY(-2px);
+      transform: translateY(-2px) scale(1.03);
       filter: brightness(1.08);
+      box-shadow: var(--card-shadow-hover);
     }
   }
 </style>

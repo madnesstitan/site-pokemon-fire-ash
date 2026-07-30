@@ -22,5 +22,25 @@
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
   --measure: 70ch;
+  /* --- Vanguard design system (dark) — thick-bordered colored cards,
+     blurred sticky chrome, gradient hero. The card palette is a set of
+     overridable custom properties so the design LLM can recolor per niche
+     while the chrome stays deterministic. --- */
+  --bg-darker: #0b1120;
+  --accent-soft: var(--color-accent);
+  --card-border-width: 3px;
+  --card-border-color: rgba(255, 255, 255, 0.92);
+  --card-radius: 1.5rem;
+  --card-shadow: 0 14px 28px rgba(0, 0, 0, 0.35);
+  --card-shadow-hover: 0 22px 44px rgba(0, 0, 0, 0.5);
+  --grad-1: linear-gradient(135deg, var(--color-accent) 0%,
+            color-mix(in oklab, var(--color-accent) 35%, #6c5ce7) 100%);
+  --grad-2: linear-gradient(135deg, #6c5ce7 0%, #4a70e8 100%);
+  --card-1: #d3b413;  --card-1-text: #ffffff;
+  --card-2: #afb13a;  --card-2-text: #ffffff;
+  --card-3: #49a7b6;  --card-3-text: #ffffff;
+  --card-4: #7c2d2d;  --card-4-text: #ffffff;
+  --card-5: #b783bf;  --card-5-text: #ffffff;
+  --card-6: #48ac4c;  --card-6-text: #ffffff;
   color-scheme: dark;
 }

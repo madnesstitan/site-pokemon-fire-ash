@@ -43,24 +43,22 @@ const jsonLd = {
 };
 ---
 
-<section class="my-8">
-  <details class="group mb-3 rounded-md border border-border bg-surface" id="faq">
-    <summary class="cursor-pointer list-none px-5 py-3 text-lg font-semibold marker:hidden">
-      Frequently asked questions
-    </summary>
-    <div class="divide-y divide-border px-5">
-      {
-        items.map((it) => (
-          <details class="group/py py-3">
-            <summary class="flex cursor-pointer items-center justify-between gap-3 font-medium marker:hidden">
-              <span>{it.question}</span>
-              <span class="text-accent transition group-open/py:rotate-45" aria-hidden="true">+</span>
-            </summary>
-            <p class="mt-2 text-sm leading-relaxed text-muted">{it.answer}</p>
-          </details>
-        ))
-      }
-    </div>
-  </details>
+<section class="my-12">
+  <h2 class="section-title mb-6">Frequently asked questions</h2>
+  <div class="faq-accordion">
+    {
+      items.map((it) => (
+        <details class="faq-item">
+          <summary>
+            <span>{it.question}</span>
+            <span class="faq-icon" aria-hidden="true">+</span>
+          </summary>
+          <div class="faq-answer">
+            <p>{it.answer}</p>
+          </div>
+        </details>
+      ))
+    }
+  </div>
   <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 </section>

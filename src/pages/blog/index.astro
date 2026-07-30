@@ -1,7 +1,8 @@
 ---
-// Blog index at /blog — a simple, dated list. Uses BaseLayout directly (not a
-// prose page). BaseLayout emits a CollectionPage + BreadcrumbList schema for
-// this path. The nav "Blog" link must resolve here, so this page is required.
+// Blog index at /blog — the mockup's colored-card grid. A gradient featured
+// card (when the freshest post has a hero image) leads, then a grid of
+// palette-cycling colored cards. Uses BaseLayout directly (not a prose page);
+// BaseLayout emits a CollectionPage + BreadcrumbList schema for this path.
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 import { site } from '../../../site.config';
@@ -12,6 +13,15 @@ const posts = (await getCollection('blog')).sort(
 
 const fmt = (d: Date) =>
   d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+// Split a featured (image-backed) post off the top; the rest fill the grid.
+const [featured, ...rest] = posts;
+const hasFeatured = Boolean(featured && featured.data.heroImage);
+const gridPosts = hasFeatured ? rest : posts;
+
+// Cycle the 6-color card palette; first keyword (or "Article") becomes the tag.
+const cardClass = (i: number) => `card-${(i % 6) + 1}`;
+const tag = (p: (typeof posts)[number]) => p.data.keywords?.[0] ?? 'Article';
 ---
 
 <BaseLayout
@@ -20,25 +30,54 @@ const fmt = (d: Date) =>
   pageType="blog"
   path="/blog"
 >
-  <section class="mx-auto max-w-3xl px-6 py-12">
-    <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Blog</h1>
-    <p class="mt-2 text-muted">{posts.length} article{posts.length === 1 ? '' : 's'}</p>
-    <ul class="mt-8 divide-y divide-border">
-      {
-        posts.map((p) => (
-          <li class="py-5">
-            <a href={`/blog/${p.id}`} class="block no-underline">
-              <h2 class="text-lg font-semibold text-text group-hover:text-accent">
-                {p.data.title}
-              </h2>
-              <p class="mt-1 text-sm text-muted">{p.data.description}</p>
-              <time class="mt-1 block text-xs text-muted/70" datetime={new Date(p.data.pubDate).toISOString()}>
+  <main class="mx-auto max-w-5xl px-6 py-12 sm:py-16">
+    <header class="mb-10 flex flex-col items-center gap-3 text-center">
+      <h1 class="text-5xl font-extrabold tracking-tight">
+        <span class="text-gradient-1">Blog</span>
+      </h1>
+      <p class="max-w-xl text-muted">
+        {posts.length} article{posts.length === 1 ? '' : 's'} from {site.name}
+      </p>
+    </header>
+
+    {hasFeatured && featured && (
+      <a
+        href={`/blog/${featured.id}`}
+        class="featured-post-card mb-10"
+      >
+        <div class="flex flex-col">
+          <span class="featured-tag">Featured</span>
+          <h2>{featured.data.title}</h2>
+          <p>{featured.data.description}</p>
+          <span class="mt-4 text-sm font-bold" style="text-decoration: underline;">
+            Read article →
+          </span>
+        </div>
+        <img
+          src={featured.data.heroImage}
+          alt=""
+          class="featured-thumb"
+          loading="eager"
+        />
+      </a>
+    )}
+
+    <section class="blog-grid">
+      {gridPosts.map((p, i) => (
+        <a href={`/blog/${p.id}`} class={`blog-card ${cardClass(i)}`}>
+          <div class="card-body">
+            <span class="badge-tag">{tag(p)}</span>
+            <h2 class="card-post-title">{p.data.title}</h2>
+            <div class="post-meta">
+              <time datetime={new Date(p.data.pubDate).toISOString()}>
                 {fmt(p.data.pubDate)}
               </time>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
-  </section>
+            </div>
+            <p class="card-post-excerpt">{p.data.description}</p>
+          </div>
+          <span class="btn-read-more">Read →</span>
+        </a>
+      ))}
+    </section>
+  </main>
 </BaseLayout>

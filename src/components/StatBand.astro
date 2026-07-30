@@ -102,6 +102,8 @@ const safeItems = (items ?? []).filter((i) => i && typeof i.value === 'number');
 <style>
   .stat-band {
     width: 100%;
+    background: var(--color-surface-2);
+    border-block: 1px solid var(--color-border);
   }
   .band-intro {
     margin-bottom: 1.4rem;
@@ -135,7 +137,11 @@ const safeItems = (items ?? []).filter((i) => i && typeof i.value === 'number');
     line-height: 1;
     letter-spacing: -0.04em;
     margin: 0;
-    color: var(--color-text);
+    background: var(--grad-1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: var(--color-accent);
   }
   .stat-band .value .affix {
     font-size: 0.5em;

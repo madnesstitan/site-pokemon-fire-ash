@@ -16,9 +16,9 @@ export const site: SiteConfig = {
   name: "Pokemon Fire Ash",
   domain: "pokemon-fire-ash.pages.dev",
   theme: "niche",
-  accent: "#e63946",
-  niche: "pokemon fire ash",
-  tagline: "Download and play the fan-made RPG that follows Ash Ketchum's journey through every anime region",
+  accent: "#38bdf8",
+  niche: "Pokemon Fire Ash",
+  tagline: "Your complete resource for the fan-made RPG that follows Ash Ketchum's anime journey",
 };
 
 /** Full canonical origin, used by astro.config.mjs and BaseLayout. */

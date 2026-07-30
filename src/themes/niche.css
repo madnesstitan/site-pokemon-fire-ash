@@ -1,197 +1,24 @@
 /*
- * Theme: niche — auto-generated for the 'pokemon fire ash' niche by sita.
+ * Theme: niche — auto-generated for the 'Pokemon Fire Ash' niche by sita.
  * Layered on top of slate :root defaults via [data-theme='niche'].
  * Re-run `sita build` (or `sita build --resume <id> --only design --force`)
  * to regenerate; hand-edits will be overwritten.
  */
 [data-theme='niche'] {
-  --color-bg: #1a1a2e;
-  --color-surface: #16213e;
-  --color-surface-2: #0f3460;
-  --color-text: #e0e0e0;
-  --color-muted: #a0a0b0;
-  --color-border: #2a2a4a;
-  --color-accent: #e63946;
-  --color-on-accent: #ffffff;
-  --font-sans: 'Nunito', 'Segoe UI', sans-serif;
-  --font-serif: 'Merriweather', 'Georgia', serif;
-  --font-mono: 'Fira Code', 'Consolas', monospace;
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
+  --color-surface-2: #243047;
+  --color-text: #e2e8f0;
+  --color-muted: #94a3b8;
+  --color-border: #334155;
+  --color-accent: #38bdf8;
+  --color-on-accent: #0f172a;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: ui-serif, Georgia, 'Times New Roman', serif;
+  --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'JetBrains Mono', Menlo, Consolas, monospace;
   --radius: 0.75rem;
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.45);
   --measure: 70ch;
   color-scheme: dark;
-}
-
-/* Bespoke home layer authored by the design LLM. */
-/* Pokemon Fire Ash - Home Page Custom Styles */
-[data-theme='pokemon-fire-ash'] {
-  /* Custom properties for hero and sections */
-  --hero-gradient: linear-gradient(180deg, #0a0a1a 0%, #1a1a2e 30%, #0f3460 70%, #1a1a2e 100%);
-  --path-glow: #e63946;
-  --pixel-size: 4px;
-}
-
-[data-theme='pokemon-fire-ash'] .hero-landing {
-  position: relative;
-  background: var(--hero-gradient);
-  overflow: hidden;
-  min-height: 85vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-[data-theme='pokemon-fire-ash'] .hero-landing::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200"><rect width="200" height="200" fill="none"/><circle cx="30" cy="30" r="2" fill="%23e63946" opacity="0.5"/><circle cx="170" cy="50" r="1.5" fill="%23e63946" opacity="0.3"/><circle cx="100" cy="100" r="1" fill="%23e63946" opacity="0.4"/></svg>') repeat;
-  background-size: 200px 200px;
-  animation: starFloat 8s ease-in-out infinite alternate;
-  pointer-events: none;
-}
-
-@keyframes starFloat {
-  0% { transform: translateY(0); opacity: 0.6; }
-  100% { transform: translateY(-20px); opacity: 1; }
-}
-
-[data-theme='pokemon-fire-ash'] .hero-landing .hero-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  padding: 2rem;
-}
-
-[data-theme='pokemon-fire-ash'] .hero-landing .hero-title {
-  font-family: var(--font-serif);
-  font-size: clamp(2.5rem, 6vw, 4.5rem);
-  color: var(--color-text);
-  text-shadow: 0 0 20px var(--path-glow), 0 0 40px var(--path-glow);
-  letter-spacing: 0.02em;
-  margin-bottom: 0.5rem;
-}
-
-[data-theme='pokemon-fire-ash'] .hero-landing .hero-subtitle {
-  font-size: clamp(1rem, 2.5vw, 1.5rem);
-  color: var(--color-muted);
-  max-width: 50ch;
-  margin: 0 auto 2rem;
-}
-
-[data-theme='pokemon-fire-ash'] .hero-landing .path-glow {
-  position: absolute;
-  bottom: 10%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60%;
-  height: 4px;
-  background: linear-gradient(90deg, transparent, var(--path-glow), transparent);
-  border-radius: 2px;
-  animation: pathPulse 3s ease-in-out infinite;
-}
-
-@keyframes pathPulse {
-  0%, 100% { opacity: 0.3; transform: translateX(-50%) scaleX(0.8); }
-  50% { opacity: 1; transform: translateX(-50%) scaleX(1); }
-}
-
-[data-theme='pokemon-fire-ash'] .spotlight {
-  background: linear-gradient(135deg, var(--color-surface) 0%, var(--color-surface-2) 100%);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: 2rem;
-  box-shadow: var(--shadow-md);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-[data-theme='pokemon-fire-ash'] .spotlight:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(230, 57, 70, 0.2);
-}
-
-[data-theme='pokemon-fire-ash'] .bento {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem;
-}
-
-[data-theme='pokemon-fire-ash'] .bento .card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  box-shadow: var(--shadow-sm);
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-[data-theme='pokemon-fire-ash'] .bento .card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(135deg, transparent 60%, rgba(230, 57, 70, 0.1));
-  pointer-events: none;
-}
-
-[data-theme='pokemon-fire-ash'] .bento .card:hover {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 20px rgba(230, 57, 70, 0.3);
-  transform: scale(1.02);
-}
-
-[data-theme='pokemon-fire-ash'] .stat-band {
-  background: var(--color-surface-2);
-  border-top: 1px solid var(--color-border);
-  border-bottom: 1px solid var(--color-border);
-  padding: 3rem 2rem;
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 2rem;
-  text-align: center;
-}
-
-[data-theme='pokemon-fire-ash'] .stat-band .stat {
-  font-family: var(--font-serif);
-  font-size: 2.5rem;
-  color: var(--color-accent);
-  text-shadow: 0 0 10px rgba(230, 57, 70, 0.5);
-}
-
-[data-theme='pokemon-fire-ash'] .stat-band .stat-label {
-  display: block;
-  font-size: 0.9rem;
-  color: var(--color-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 0.25rem;
-}
-
-[data-theme='pokemon-fire-ash'] .final-cta {
-  background: linear-gradient(135deg, var(--color-accent) 0%, #c62828 100%);
-  color: var(--color-on-accent);
-  border: none;
-  border-radius: var(--radius);
-  padding: 1rem 2.5rem;
-  font-size: 1.25rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  box-shadow: 0 0 20px rgba(230, 57, 70, 0.4);
-}
-
-[data-theme='pokemon-fire-ash'] .final-cta:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 30px rgba(230, 57, 70, 0.6);
-}
-
-[data-theme='pokemon-fire-ash'] .final-cta:active {
-  transform: scale(0.98);
 }

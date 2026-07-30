@@ -18,5 +18,22 @@
   --shadow-sm: 3px 3px 0 #0a0a0a;
   --shadow-md: 5px 5px 0 #0a0a0a;
   --measure: 72ch;
+  /* Vanguard design system (bold/neo-brutalist) — black borders, no radius,
+     hard offset shadows, high-contrast card fills with black text. */
+  --bg-darker: #f0f0ee;
+  --accent-soft: var(--color-accent);
+  --card-border-width: 4px;
+  --card-border-color: #0a0a0a;
+  --card-radius: 0rem;
+  --card-shadow: 6px 6px 0 #0a0a0a;
+  --card-shadow-hover: 8px 8px 0 #0a0a0a;
+  --grad-1: linear-gradient(135deg, var(--color-accent) 0%, #0a0a0a 100%);
+  --grad-2: linear-gradient(135deg, #6c5ce7 0%, #4a70e8 100%);
+  --card-1: #f4d35e;  --card-1-text: #0a0a0a;
+  --card-2: #c9b458;  --card-2-text: #0a0a0a;
+  --card-3: #5aa3a6;  --card-3-text: #0a0a0a;
+  --card-4: #e0564f;  --card-4-text: #0a0a0a;
+  --card-5: #b07cb6;  --card-5-text: #0a0a0a;
+  --card-6: #5fa85f;  --card-6-text: #0a0a0a;
   color-scheme: light;
 }

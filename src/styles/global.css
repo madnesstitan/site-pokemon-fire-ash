@@ -29,6 +29,27 @@
   --shadow-sm: var(--shadow-sm);
   --shadow-md: var(--shadow-md);
   --measure: var(--measure);
+  /* Vanguard design-system tokens — exposed so Tailwind utilities like
+     `bg-darker`, `text-card-1-text`, `border-card-border`, `rounded-card`,
+     `shadow-card` resolve to the live CSS variables (theme-swappable). */
+  --color-darker: var(--bg-darker);
+  --color-accent-soft: var(--accent-soft);
+  --color-card-border: var(--card-border-color);
+  --color-card-1: var(--card-1);
+  --color-card-1-text: var(--card-1-text);
+  --color-card-2: var(--card-2);
+  --color-card-2-text: var(--card-2-text);
+  --color-card-3: var(--card-3);
+  --color-card-3-text: var(--card-3-text);
+  --color-card-4: var(--card-4);
+  --color-card-4-text: var(--card-4-text);
+  --color-card-5: var(--card-5);
+  --color-card-5-text: var(--card-5-text);
+  --color-card-6: var(--card-6);
+  --color-card-6-text: var(--card-6-text);
+  --radius-card: var(--card-radius);
+  --shadow-card: var(--card-shadow);
+  --shadow-card-hover: var(--card-shadow-hover);
 }
 
 @layer base {
@@ -170,5 +191,501 @@
     html {
       scroll-behavior: auto;
     }
+  }
+}
+
+/* ==========================================================================
+   VANGUARD DESIGN SYSTEM — fallback defaults (a quality floor, NOT a fixed
+   config). These give every site a crafted baseline so a thin/empty design
+   output still looks intentional. The design LLM is the real owner of the
+   look: its `home_css` (in niche.css, UNLAYERED, scoped under
+   [data-theme='niche']) wins over everything here and applies site-wide —
+   it can override, replace, or ignore any of these to reimagine the site
+   per niche. See skills/design.md for the full list of targetable hooks.
+   Pure CSS — no JS, no deps, theme-swappable through CSS variables.
+   ========================================================================== */
+@layer components {
+  /* Gradient hero text — two accents, clipped to text. */
+  .text-gradient-1 {
+    background: var(--grad-1);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+  .text-gradient-2 {
+    background: var(--grad-2);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+
+  /* Sticky blurred site header — consistent chrome across home + inner pages. */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: color-mix(in oklab, var(--color-bg) 92%, transparent);
+    -webkit-backdrop-filter: blur(12px);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid color-mix(in oklab, var(--color-text) 10%, transparent);
+    padding-block: 1rem;
+  }
+  .site-header .nav-container {
+    max-width: 72rem;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .site-header .brand-logo {
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    text-decoration: none;
+  }
+  .site-header .nav-links {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .site-header .nav-link {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: color-mix(in oklab, var(--color-text) 88%, transparent);
+    text-decoration: none;
+    transition: color 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  .site-header .nav-link:hover,
+  .site-header .nav-link[aria-current='page'] {
+    color: var(--color-accent);
+  }
+  @media (max-width: 868px) {
+    .site-header .nav-links { gap: 1.1rem; }
+  }
+  @media (max-width: 640px) {
+    .site-header .nav-links { display: none; }
+  }
+
+  /* Dark footer band. */
+  .site-footer {
+    border-top: 1px solid color-mix(in oklab, var(--color-text) 8%, transparent);
+    background-color: var(--bg-darker);
+    padding: 2.5rem 1.5rem;
+    text-align: center;
+    color: var(--color-muted);
+    font-size: 0.9rem;
+  }
+  .site-footer .footer-content {
+    max-width: 72rem;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+  .site-footer .footer-disclaimer {
+    max-width: 44rem;
+    line-height: 1.5;
+    font-size: 0.825rem;
+    opacity: 0.75;
+  }
+
+  /* Thick-bordered colored cards (.vcard) — the core mockup primitive.
+     .vcard.card-1..6 fill with the palette; .vcard.gradient uses grad-1. */
+  .vcard {
+    border: var(--card-border-width) solid var(--card-border-color);
+    border-radius: var(--card-radius);
+    padding: 2rem;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+                box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .vcard:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--card-shadow-hover);
+    }
+  }
+  .vcard.card-1 { background-color: var(--card-1); color: var(--card-1-text); }
+  .vcard.card-2 { background-color: var(--card-2); color: var(--card-2-text); }
+  .vcard.card-3 { background-color: var(--card-3); color: var(--card-3-text); }
+  .vcard.card-4 { background-color: var(--card-4); color: var(--card-4-text); }
+  .vcard.card-5 { background-color: var(--card-5); color: var(--card-5-text); }
+  .vcard.card-6 { background-color: var(--card-6); color: var(--card-6-text); }
+  .vcard.gradient { background: var(--grad-1); color: var(--color-on-accent); }
+  .vcard h2, .vcard h3 { color: inherit; }
+  .vcard .card-paragraph { line-height: 1.65; }
+  .vcard .card-list {
+    list-style: none; margin: 0; padding: 0;
+    display: flex; flex-direction: column; gap: 0.5rem;
+  }
+  .vcard .card-list li { line-height: 1.5; }
+  .vcard a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+
+  /* Dashed title badge — the mockup's signature header chip on cards. */
+  .dashed-badge {
+    display: inline-block;
+    align-self: flex-start;
+    border: 1.5px dashed currentColor;
+    border-radius: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.25rem;
+  }
+
+  /* Tag badge (blog cards / chip labels). */
+  .badge-tag {
+    display: inline-block;
+    align-self: flex-start;
+    background: rgba(0, 0, 0, 0.18);
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 0.2rem 0.7rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+  }
+
+  /* Callout box (post mockup) — colored fill + dashed badge header. */
+  .callout-box {
+    border: var(--card-border-width) solid var(--card-border-color);
+    border-radius: var(--card-radius);
+    padding: 1.75rem 2rem;
+    box-shadow: var(--card-shadow);
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+  .callout-box.yellow { background-color: var(--card-1); color: var(--card-1-text); }
+  .callout-box.teal { background-color: var(--card-3); color: var(--card-3-text); }
+  .callout-box.green { background-color: var(--card-6); color: var(--card-6-text); }
+  .callout-box.burgundy { background-color: var(--card-4); color: var(--card-4-text); }
+  .callout-box.purple { background-color: var(--card-5); color: var(--card-5-text); }
+  .callout-box p { line-height: 1.6; }
+
+  /* Info notice (legal pages) — soft accent left border. */
+  .info-notice {
+    background-color: color-mix(in oklab, var(--color-accent) 9%, transparent);
+    border-left: 4px solid var(--color-accent);
+    border-radius: 0.4rem;
+    padding: 1rem 1.25rem;
+    color: var(--color-text);
+    font-size: 0.95rem;
+    margin: 0.5rem 0;
+  }
+
+  /* FAQ accordion (home mockup). Built on <details> for a11y + no-JS,
+     styled to match the mockup's rounded expandable rows. */
+  .faq-accordion { width: 100%; display: flex; flex-direction: column; gap: 1rem; }
+  .faq-item {
+    background-color: color-mix(in oklab, var(--color-text) 5%, transparent);
+    border: 1.5px solid color-mix(in oklab, var(--color-text) 14%, transparent);
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: background-color 0.3s ease;
+  }
+  .faq-item[open] {
+    background-color: color-mix(in oklab, var(--color-text) 8%, transparent);
+  }
+  .faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 1.25rem 1.5rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--color-text);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .faq-item summary::-webkit-details-marker { display: none; }
+  .faq-item summary .faq-icon {
+    font-size: 1.4rem;
+    line-height: 1;
+    transition: transform 0.3s ease;
+  }
+  .faq-item[open] summary .faq-icon { transform: rotate(45deg); }
+  .faq-item .faq-answer {
+    padding: 0 1.5rem 1.25rem 1.5rem;
+    color: color-mix(in oklab, var(--color-text) 82%, transparent);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  .faq-item .faq-answer p { margin: 0.5rem 0 0; }
+  .faq-item .faq-answer p:first-child { margin-top: 0; }
+
+  /* Blog card grid (blog index mockup). Colored cards cycle the palette. */
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
+    gap: 2rem;
+  }
+  .blog-card {
+    border: var(--card-border-width) solid var(--card-border-color);
+    border-radius: var(--card-radius);
+    padding: 2rem 1.75rem;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1),
+                box-shadow 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .blog-card:hover {
+      transform: translateY(-6px);
+      box-shadow: var(--card-shadow-hover);
+    }
+  }
+  .blog-card.card-1 { background-color: var(--card-1); color: var(--card-1-text); }
+  .blog-card.card-2 { background-color: var(--card-2); color: var(--card-2-text); }
+  .blog-card.card-3 { background-color: var(--card-3); color: var(--card-3-text); }
+  .blog-card.card-4 { background-color: var(--card-4); color: var(--card-4-text); }
+  .blog-card.card-5 { background-color: var(--card-5); color: var(--card-5-text); }
+  .blog-card.card-6 { background-color: var(--card-6); color: var(--card-6-text); }
+  .blog-card .card-body { display: flex; flex-direction: column; gap: 0.75rem; }
+  .blog-card .card-post-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    line-height: 1.3;
+    color: inherit;
+  }
+  .blog-card .post-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0.92;
+  }
+  .blog-card .card-post-excerpt {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    opacity: 0.94;
+  }
+  .blog-card .btn-read-more {
+    align-self: flex-start;
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-decoration: none;
+    color: inherit;
+    border-bottom: 2px solid currentColor;
+    padding-bottom: 2px;
+    transition: opacity 0.2s ease;
+  }
+  .blog-card:hover .btn-read-more { opacity: 0.8; }
+
+  /* Featured post card (blog index) — split gradient + image. */
+  .featured-post-card {
+    background: var(--grad-1);
+    border: var(--card-border-width) solid var(--card-border-color);
+    border-radius: var(--card-radius);
+    padding: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 21rem;
+    gap: 2.25rem;
+    align-items: center;
+    box-shadow: var(--card-shadow);
+    color: var(--color-on-accent);
+    text-decoration: none;
+  }
+  .featured-post-card .featured-tag {
+    display: inline-block;
+    align-self: flex-start;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid currentColor;
+    border-radius: 999px;
+    padding: 0.25rem 0.8rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 0.5rem;
+  }
+  .featured-post-card h2 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin: 0;
+  }
+  .featured-post-card p {
+    font-size: 1rem;
+    line-height: 1.55;
+    opacity: 0.95;
+    margin-top: 0.5rem;
+  }
+  .featured-post-card .featured-thumb {
+    width: 100%;
+    height: 100%;
+    max-height: 16rem;
+    object-fit: cover;
+    border-radius: calc(var(--card-radius) - 0.5rem);
+    border: var(--card-border-width) solid var(--card-border-color);
+  }
+  @media (max-width: 868px) {
+    .featured-post-card { grid-template-columns: 1fr; padding: 1.75rem; }
+  }
+
+  /* Pagination. */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-top: 1rem;
+  }
+  .pagination a, .pagination span {
+    min-width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 0.5rem;
+    border: 1.5px solid color-mix(in oklab, var(--color-text) 20%, transparent);
+    background-color: color-mix(in oklab, var(--color-text) 5%, transparent);
+    color: var(--color-text);
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-inline: 0.6rem;
+    text-decoration: none;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+  .pagination a:hover, .pagination .active {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+
+  /* Article hero card (post mockup) — framed banner image. */
+  .article-hero-card {
+    background: var(--grad-1);
+    border: var(--card-border-width) solid var(--card-border-color);
+    border-radius: var(--card-radius);
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+    box-shadow: var(--card-shadow);
+  }
+  .article-hero-card img {
+    width: 100%;
+    height: auto;
+    max-height: 26rem;
+    object-fit: cover;
+    border-radius: 1rem;
+    border: var(--card-border-width) solid var(--card-border-color);
+  }
+
+  /* Author box (post mockup) — avatar + bio on a surface card. */
+  .author-box {
+    margin-top: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--card-radius);
+    background: var(--color-surface);
+    padding: 1.5rem;
+  }
+  .author-box img {
+    width: 4rem;
+    height: 4rem;
+    flex: none;
+    border-radius: 50%;
+    border: 2px solid var(--color-text);
+    object-fit: cover;
+  }
+  .author-box .author-name { font-weight: 700; color: var(--color-text); }
+  .author-box .author-bio {
+    margin-top: 0.25rem;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    color: var(--color-muted);
+  }
+  @media (max-width: 640px) {
+    .author-box { flex-direction: column; text-align: center; }
+  }
+
+  /* Clean policy card (legal pages) — single framed paper. */
+  .policy-card {
+    background-color: var(--color-surface);
+    border: 2px solid color-mix(in oklab, var(--color-text) 12%, transparent);
+    border-radius: 1.25rem;
+    padding: 3rem 2.75rem;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+  @media (max-width: 640px) {
+    .policy-card { padding: 2rem 1.5rem; }
+  }
+
+  /* Section title helper (home). */
+  .section-title {
+    font-size: clamp(1.9rem, 4vw, 2.4rem);
+    font-weight: 800;
+    text-align: center;
+    color: var(--color-text);
+    letter-spacing: -0.02em;
+  }
+
+  /* Primary/secondary button system — gradient + thick border (mockup CTA).
+     Used by <CTA>, <Hero>, and any inline action across the site. */
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0.85rem 2rem;
+    border: var(--card-border-width) solid var(--card-border-color);
+    border-radius: var(--radius);
+    background: var(--grad-1);
+    color: var(--color-on-accent);
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.2s ease, filter 0.2s ease, box-shadow 0.2s ease;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .btn-primary:hover {
+      transform: translateY(-2px) scale(1.03);
+      filter: brightness(1.08);
+      box-shadow: var(--card-shadow-hover);
+    }
+  }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    padding: 0.85rem 2rem;
+    border: var(--card-border-width) solid var(--card-border-color);
+    border-radius: var(--radius);
+    background: color-mix(in oklab, var(--color-text) 6%, transparent);
+    color: var(--color-text);
+    font-weight: 700;
+    font-size: 1rem;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+  .btn-secondary:hover {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
   }
 }
