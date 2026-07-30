@@ -1,107 +1,131 @@
 ---
-title: "Pokemon Fire Ash – Relive Ash Ketchum's Complete Journey"
-description: "Pokemon Fire Ash is a complete RPG Maker fan game that lets you travel through every region from Kanto to Galar as Ash Ketchum. Download and play now."
-pubDate: 2026-07-29
+title: Pokemon Fire Ash – Download the Anime-Inspired Fan Game
+description: Download Pokemon Fire Ash, the fan-made RPG that lets you play through Ash Ketchum's entire anime journey across Kanto, Johto, Hoenn, and more regions.
+pubDate: 2026-07-30
 pageType: home
-keywords: [pokemon fire ash, pokemon fire ash fan game, ash ketchum game, pokemon rpgxp]
+keywords: [pokemon fire ash, fire ash download, pokemon fire ash game, ash ketchum fan game, pokemon fire ash gba]
 ---
 
-import FAQ from '../../components/FAQ.astro'
-import BentoGrid from '../../components/BentoGrid.astro'
-import FinalCTA from '../../components/FinalCTA.astro'
 import HeroLanding from '../../components/HeroLanding.astro'
-import Marquee from '../../components/Marquee.astro'
-import Spotlight from '../../components/Spotlight.astro'
 import StatBand from '../../components/StatBand.astro'
+import BentoGrid from '../../components/BentoGrid.astro'
+import Marquee from '../../components/Marquee.astro'
+import FAQ from '../../components/FAQ.astro'
+import FinalCTA from '../../components/FinalCTA.astro'
 
 <HeroLanding
-  title="Pokemon Fire Ash – Relive Ash Ketchum's Complete Journey"
-  subtitle="The ultimate fan-made adventure across all nine regions — from Kanto to Galar, with over 50 gyms and 900+ Pokemon."
-  cta={{ href: '/how-to-download-pokemon-fire-ash', label: 'Download Now' }}
-  align="center"
+  title="Live Ash's Journey"
+  subtitle="Download Pokemon Fire Ash and play through every anime region — Kanto to Galar — in classic GBA-style pixel art. Nine regions. 50+ Gym Leaders. 900+ Pokemon. Your adventure starts here."
+  cta={{ href: "/guide", label: "Download Now" }}
 />
-
-<section class="bento py-16 px-4 max-w-6xl mx-auto">
-  <h2 class="text-3xl font-bold text-amber-400 mb-8 text-center">What Awaits You</h2>
-  <BentoGrid
-    items={[
-      { title: 'All Nine Regions', text: 'Travel through Kanto, Orange Islands, Johto, Hoenn, Sinnoh, Unova, Kalos, Alola, and Galar — exactly as Ash did in the anime.', href: '/pokemon-fire-ash-guide' },
-      { title: 'Over 900 Pokemon', text: 'Catch every Pokemon from Generation 1 through 8, including Alolan Forms, Mega Evolutions, and Galarian variants.', href: '/pokemon-fire-ash-guide' },
-      { title: '50+ Gym Battles', text: 'Face every gym leader Ash challenged, plus the Orange Crew, Battle Frontier, and the World Coronation Series.', href: '/pokemon-fire-ash-guide' },
-      { title: 'Anime Faithful', text: 'Pikachu on your shoulder, rivals and companions by your side, and story beats ripped straight from the TV series.', href: '/pokemon-fire-ash-guide' },
-    ]}
-    columns={2}
-  />
-</section>
-
-<section class="spotlight py-16 bg-gradient-to-br from-gray-900 to-amber-900 text-white">
-  <Spotlight
-    title="Every Battle Mechanic, Every Generation"
-    text="Mega Evolution, Z-Moves, Dynamax, Gigantamax, and Ash-Greninja — all fully implemented. The game doesn't just recreate the regions; it recreates the power systems that defined each era."
-    align="center"
-  />
-</section>
 
 <StatBand
   stats={[
-    { label: 'Regions', value: '9' },
-    { label: 'Gym Battles', value: '50+' },
-    { label: 'Pokemon', value: '900+' },
-    { label: 'Years Updated', value: '5' },
+    { label: "Regions to Explore", value: "9" },
+    { label: "Gym Leaders", value: "50+" },
+    { label: "Pokemon to Catch", value: "900+" },
+    { label: "Generations Covered", value: "8" }
   ]}
-  accent="text-amber-400"
 />
 
-<section class="marquee py-16 px-4">
-  <h2 class="text-2xl font-bold text-center mb-6 text-amber-400">Regions You'll Explore</h2>
-  <Marquee
+<section className="py-20 px-4 max-w-6xl mx-auto">
+  <div className="grid md:grid-cols-2 gap-12 items-center">
+    <div>
+      <h2 className="text-3xl font-bold mb-4">What Is Pokemon Fire Ash?</h2>
+      <p className="text-lg leading-relaxed">
+        Pokemon Fire Ash is a fan-made RPG built with RPG Maker XP and Pokemon Essentials. Instead of creating a custom trainer, you step directly into Ash Ketchum's shoes. The story follows the anime episode by episode, from oversleeping on the morning he gets Pikachu all the way through the Alola region and beyond.
+      </p>
+      <p className="text-lg leading-relaxed mt-4">
+        You'll battle Gym Leaders, face Team Rocket, compete in League tournaments, and catch the same Pokemon Ash caught in the show — with some freedom to build your own team along the way. The game is <strong>not a ROM hack</strong> — it runs natively on PC and requires no emulator. Android users can play via JoiPlay with the RPG Maker plugin.
+      </p>
+    </div>
+    <div className="bg-gray-100 dark:bg-gray-800 rounded-xl p-8">
+      <h3 className="text-xl font-semibold mb-3">Current Version</h3>
+      <ul className="space-y-2">
+        <li><strong>Version:</strong> 3.6 Part 2.2 (last updated 2026)</li>
+        <li><strong>File size:</strong> ~1.2 GB compressed</li>
+        <li><strong>Language:</strong> English only</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section className="py-20 px-4 max-w-6xl mx-auto">
+  <h2 className="text-3xl font-bold mb-12 text-center">Key Features</h2>
+  <BentoGrid
     items={[
-      'Kanto & Orange Islands', 'Johto', 'Hoenn', 'Sinnoh', 'Unova', 'Kalos', 'Alola', 'Galar',
-      'Kanto & Orange Islands', 'Johto', 'Hoenn', 'Sinnoh', 'Unova', 'Kalos', 'Alola', 'Galar',
+      {
+        title: "Anime-Accurate Storyline",
+        text: "Every major anime arc is represented. Start in Pallet Town with Pikachu, meet Misty and Brock, and progress through the Indigo League, Orange Islands, and all regions through Galar. Dialogue and events mirror the show closely."
+      },
+      {
+        title: "Massive Multi-Region World",
+        text: "Explore nine regions — more than any official Pokemon game. Each has its own Gym Leaders, routes, story missions, and League tournament. Total playtime easily exceeds 100 hours."
+      },
+      {
+        title: "Over 50 Gym Battles",
+        text: "Challenge more than 50 Gym Leaders across all regions, plus rematches and post-game content. The Battle Frontier is also included."
+      },
+      {
+        title: "National Dex with 900+ Pokemon",
+        text: "Features Pokemon from Generation 1 through 8, including regional variants, Mega Evolutions, Z-Moves, Dynamax, and Ash-Greninja. See our [full team list by region](/blog/ashs-pokemon-team) for every catch."
+      },
+      {
+        title: "Classic GBA-Style Graphics",
+        text: "2D pixel graphics inspired by FireRed and Emerald, with custom sprites for Ash, his companions, and key anime characters. Music comes from the official games and RPG Maker tracks."
+      },
+      {
+        title: "No HMs, No Trade Evolutions",
+        text: "Fly is replaced with a warp system at Pokemon Centers. Trade evolutions now happen by level-up or using an item. Two of the biggest annoyances from the original games are gone."
+      }
     ]}
-    speed="slow"
+    columns={3}
   />
 </section>
 
-<section class="faq-section py-16 px-4 max-w-4xl mx-auto">
-  <h2 class="text-3xl font-bold text-amber-400 mb-8 text-center">Frequently Asked Questions</h2>
-  <FAQ
-    items={[
-      {
-        question: 'Is Pokemon Fire Ash a ROM hack?',
-        answer: 'No. Pokemon Fire Ash is a fan game built with RPG Maker XP and Pokemon Essentials. It runs on PC or Android using JoiPlay, not on a GBA emulator.'
-      },
-      {
-        question: 'Can I play Pokemon Fire Ash on Android?',
-        answer: 'Yes. You need to install JoiPlay and the RPG Maker Plugin on your Android device. The [full guide for downloading and playing](/how-to-download-pokemon-fire-ash) covers the process step by step.'
-      },
-      {
-        question: 'Is the game complete?',
-        answer: 'Yes. The main story through Galar is fully playable, and the post-game content is available after becoming World Champion.'
-      },
-      {
-        question: 'How many Pokemon are in the game?',
-        answer: 'Over 900 Pokemon up to Generation 8 are available. The National Dex covers every Pokemon that existed up through Sword and Shield.'
-      },
-      {
-        question: 'What regions are included?',
-        answer: 'Kanto, Orange Islands, Johto, Hoenn, Sinnoh, Unova, Kalos, Alola, and Galar. Paldea is not included since Ash did not visit that region in the anime.'
-      },
-      {
-        question: 'Does the game include Mega Evolution and Dynamax?',
-        answer: 'Yes. Mega Evolution, Z-Moves, Dynamax, Gigantamax, and Ash-Greninja are all implemented.'
-      },
-    ]}
-  />
-  <p class="text-center mt-6 text-gray-400">
-    For a complete breakdown of features, regions, gyms, and version history, visit the [full Pokemon Fire Ash guide](/pokemon-fire-ash-guide).
-  </p>
+<section className="py-20 px-4 max-w-6xl mx-auto">
+  <h2 className="text-3xl font-bold mb-8 text-center">What Players Say</h2>
+  <div className="grid md:grid-cols-2 gap-8">
+    <blockquote className="bg-gray-50 dark:bg-gray-900 p-8 rounded-xl italic text-lg">
+      "This is the ultimate 'what if' Pokemon anime game. It's not perfect — some dialogue is bare-bones and early episodes feel rushed — but the sheer scale is incredible. Playing through every region as Ash is a dream come true."
+      <footer className="mt-4 text-sm not-italic text-gray-500">— PokeCommunity forum user</footer>
+    </blockquote>
+    <blockquote className="bg-gray-50 dark:bg-gray-900 p-8 rounded-xl italic text-lg">
+      "I've been playing for 80 hours and I'm only halfway through Sinnoh. The amount of content is insane."
+      <footer className="mt-4 text-sm not-italic text-gray-500">— Reddit player</footer>
+    </blockquote>
+  </div>
 </section>
+
+<FAQ
+  items={[
+    {
+      question: "Do I have to follow Ash's exact team?",
+      answer: "Not exactly. You can catch and train any Pokemon you want, but certain story events require you to have specific Pokemon (like releasing Butterfree or catching a specific Pokemon for a cutscene). You have freedom to build your own team for battles, but the story assumes Ash's canon catches."
+    },
+    {
+      question: "Do I have to lose League battles like Ash did?",
+      answer: "No. You can win any battle, including League matches. However, even if you win a League tournament, the story still moves you to the next region — you don't get to advance further in that League. You can revisit and win Leagues after completing the main story."
+    },
+    {
+      question: "Is the game complete?",
+      answer: "Yes. The main story through Alola is complete, and Galar content has been added in updates. The developer continues to release patches with bug fixes and new content."
+    },
+    {
+      question: "Can I play on my phone?",
+      answer: "Yes, via JoiPlay on Android. Performance varies by device, but most modern phones handle it well."
+    },
+    {
+      question: "Is there a walkthrough?",
+      answer: "Yes. The community has created detailed walkthroughs and Pokemon location guides. Check our [full installation guide](/guide) for links."
+    }
+  ]}
+/>
 
 <FinalCTA
   title="Ready to Start Your Journey?"
-  text="Download the game, join thousands of trainers, and relive Ash Ketchum's epic adventure from Kanto to Galar."
-  href="/how-to-download-pokemon-fire-ash"
+  text="Download Pokemon Fire Ash for your platform and begin the adventure that follows Ash Ketchum from Pallet Town to the world championship."
+  href="/guide"
   label="Download Now"
   variant="band"
 />
